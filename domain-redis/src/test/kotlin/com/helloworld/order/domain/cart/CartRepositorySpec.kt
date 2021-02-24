@@ -4,6 +4,8 @@ import com.helloworld.order.DomainRedisApplication
 import com.helloworld.order.redis.config.RedisConfig
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.ints.shouldBeGreaterThan
+import io.kotest.matchers.should
+import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -12,6 +14,7 @@ import org.springframework.context.annotation.Import
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit.jupiter.SpringExtension
+import java.math.BigDecimal
 import java.time.ZonedDateTime
 
 
@@ -33,7 +36,7 @@ class CartRepositorySpec : DescribeSpec() {
             val deviceId: String = "deviceId"
             val shop: CartShop = CartShop(1L, "FIRST", "shopName", 1L)
 
-            val cart: Cart = Cart(
+            val cart = Cart(
                 id = id,
                 channelType = channelType,
                 deviceId = deviceId,
@@ -43,9 +46,38 @@ class CartRepositorySpec : DescribeSpec() {
                 updatedAt = ZonedDateTime.now()
             )
 
+            val cartLineItem = CartLineItem(
+                cartId = cart.id,
+                productId = 1L,
+                productName = "productName",
+                productDescription = "productDescription",
+                productType = "productType",
+                amount = BigDecimal.valueOf(1000L),
+                salesAmount = BigDecimal.valueOf(2000L),
+                discountAmount = BigDecimal.valueOf(1000L)
+            )
+
+            val cartLineItemOption = CartLineItemOption(
+                productId = cartLineItem.productId,
+                optionId = 1L,
+                optionName = "optionName",
+                optionGroupId =  1L,
+                optionGroupName = "optionGroupName",
+                amount = BigDecimal.valueOf(500L),
+                salesAmount = BigDecimal.valueOf(1000L),
+                discountAmount = BigDecimal.valueOf(500L)
+            )
+
+            cartLineItem.addLineItemOption(cartLineItemOption)
+            cart.addLineItem(cartLineItem)
 
             it("create") {
-                cartRepository.save(cart).shouldNotBe(null)
+                val result = cartRepository.save(cart)
+                result.shouldNotBe(null)
+                result.totalAmount.shouldBe(BigDecimal.valueOf(1500L))
+                result.amount.shouldBe(BigDecimal.valueOf(1500L))
+                result.salesAmount.shouldBe(BigDecimal.valueOf(3000L))
+                result.discountAmount.shouldBe(BigDecimal.valueOf(1500L))
             }
 
             it("read") {

@@ -21,18 +21,30 @@ class Cart(
     @Indexed
     val accountId: Long,
     val shop: CartShop,
-    val amount: BigDecimal = BigDecimal.ZERO,
-    val salesAmount: BigDecimal = BigDecimal.ZERO,
-    val discountAmount: BigDecimal = BigDecimal.ZERO,
-    val totalAmount: BigDecimal = BigDecimal.ZERO,
-    val lineItems: List<CartLineItem> = ArrayList(),
-    var cartDiscounts: List<CartDiscount> = ArrayList(),
-    @Indexed
+    var amount: BigDecimal = BigDecimal.ZERO,
+    var salesAmount: BigDecimal = BigDecimal.ZERO,
+    var discountAmount: BigDecimal = BigDecimal.ZERO,
+    var totalAmount: BigDecimal = BigDecimal.ZERO,
+    val lineItems: MutableList<CartLineItem> = ArrayList(),
+    val cartDiscounts: MutableList<CartDiscount> = ArrayList(),
     var createdAt: ZonedDateTime,
-    @Indexed
     var updatedAt: ZonedDateTime
 ) : Serializable {
+    fun addLineItem(lineItem: CartLineItem) {
+        lineItems.add(lineItem)
+        calculate()
+    }
 
+    private fun calculateAmount(): BigDecimal = lineItems.sumOf { it.getTotalAmount() }
+    private fun calculateSalesAmount(): BigDecimal = lineItems.sumOf { it.getTotalSalesAmount() }
+    private fun calculateDiscountAmount(): BigDecimal = lineItems.sumOf { it.getTotalDiscountAmount() }
+
+    private fun calculate() {
+        amount = calculateAmount()
+        salesAmount = calculateSalesAmount()
+        discountAmount = calculateDiscountAmount()
+        totalAmount = amount.minus(cartDiscounts.sumOf { it.calculatedValue })
+    }
 
     companion object {
         fun getId(accountId: Long): String {
