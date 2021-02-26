@@ -4,6 +4,7 @@ plugins {
 	id("java")
 	kotlin("jvm")
 	kotlin("plugin.spring")
+	kotlin("plugin.jpa")
 
 	application
 }
@@ -17,6 +18,8 @@ configurations {
 }
 
 dependencies {
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+	runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
 }
 
 val jar: Jar by tasks

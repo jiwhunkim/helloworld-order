@@ -17,6 +17,7 @@ configurations {
 }
 
 dependencies {
+	implementation("org.springframework.boot:spring-boot-starter-web")
 }
 
 val jar: Jar by tasks

@@ -1,14 +1,8 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
 	id("org.springframework.boot")
 	id("io.spring.dependency-management")
-	id("java")
 	kotlin("jvm")
 	kotlin("plugin.spring")
-	kotlin("plugin.jpa")
-
-
 }
 
 java.sourceCompatibility = JavaVersion.VERSION_11
@@ -21,15 +15,12 @@ configurations {
 
 dependencies {
 	implementation(project(":core"))
-	implementation(project(":domain-redis"))
+	implementation(project(":core-web"))
+	implementation(project(":domain-mapper"))
+	implementation(project(":domain"))
 
-	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-web")
-	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-	implementation("org.jetbrains.kotlin:kotlin-reflect")
-	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-	developmentOnly("org.springframework.boot:spring-boot-devtools")
-	runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
-	annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+	implementation("io.springfox:springfox-boot-starter:3.0.0")
+	implementation("io.springfox:springfox-swagger-ui:3.0.0")
 }

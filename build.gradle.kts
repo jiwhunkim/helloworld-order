@@ -6,6 +6,8 @@ plugins {
 	kotlin("jvm") version "1.4.30" apply false
 	kotlin("plugin.spring") version "1.4.30" apply false
 	kotlin("plugin.jpa") version "1.4.30" apply false
+	kotlin("kapt") version "1.4.30" apply false
+
 }
 
 allprojects {
@@ -30,17 +32,28 @@ subprojects {
 
 	apply {
 		plugin("io.spring.dependency-management")
+		plugin("org.springframework.boot")
+		plugin("kotlin")
+		plugin("kotlin-kapt")
 		plugin("java")
 	}
-}
 
-val kotestProjects = listOf(
-	project(":domain-redis"),
-	project(":external-api")
-)
+	the<io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension>().apply {
+		imports {
+			mavenBom("org.springframework.cloud:spring-cloud-dependencies:Hoxton.SR8")
+		}
+	}
 
-configure(kotestProjects) {
 	dependencies {
+		"implementation"("com.fasterxml.jackson.module:jackson-module-kotlin")
+		"implementation"("org.jetbrains.kotlin:kotlin-reflect")
+		"implementation"("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+		"developmentOnly"("org.springframework.boot:spring-boot-devtools")
+//		"annotationProcessor"("org.springframework.boot:spring-boot-configuration-processor")
+		"kapt"("org.springframework.boot:spring-boot-configuration-processor")
+
+		"implementation"("org.springframework.boot:spring-boot-starter")
+
 		"testImplementation"("io.kotest:kotest-runner-junit5:4.4.1") // for kotest framework
 		"testImplementation"("io.kotest:kotest-assertions-core:4.4.1") // for kotest core jvm assertions
 		"testImplementation"("io.kotest:kotest-property:4.4.1") // for kotest property test

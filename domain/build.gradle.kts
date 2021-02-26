@@ -17,6 +17,11 @@ configurations {
 }
 
 dependencies {
+	api(project(":domain-redis"))
+	implementation(project(":domain-rds"))
+	implementation(project(":domain-mapper"))
+
+//	implementation("org.springframework.boot:spring-boot-starter-data-redis")
 }
 
 val jar: Jar by tasks

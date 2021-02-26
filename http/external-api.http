@@ -1,0 +1,106 @@
+### 장바구니 가져오기
+GET {{external-api}}/carts/account
+Authorization: Bearer d02683e3-9b4e-4a4a-bc46-ff76e408ba09
+Authenticated: 1612162831279222
+Content-Type: application/json; charset=utf-8
+Media-Type: application/vnd.helloworld.api.v1+json
+Channel-Type: HelloWorld
+Accept-Language: ko-Kr
+Device-Id: testdeviceid
+Os-Code: android
+Os-Version: 1.0.0
+App-Version: 1.0.0
+
+### 장바구니 담기
+POST {{external-api}}/cart-line-items
+Authorization: Bearer d02683e3-9b4e-4a4a-bc46-ff76e408ba09
+Authenticated: 1612162831279222
+Content-Type: application/json; charset=utf-8
+Media-Type: application/vnd.helloworld.api.v1+json
+Channel-Type: HelloWorld
+Accept-Language: ko-Kr
+Device-Id: testdeviceid
+Os-Code: android
+Os-Version: 1.0.0
+App-Version: 1.0.0
+
+{
+  "shop" : {
+    "shopNo" : 10012149,
+    "serviceType" : "FIRST_PARTY",
+    "name" : "安兵衛 渋谷店"
+  },
+  "lineItem" : {
+    "productId":322,
+    "productName":"つけ麺",
+    "productType":"MENU",
+    "amount":1500,
+    "salesAmount":1500,
+    "discountAmount":0
+  }
+}
+
+> {% //response handler
+client.global.set("cartId", response.body.id);
+client.log(client.global.get("cartId"));
+%}
+
+### 장바구니 수정 같은 물품
+PUT {{external-api}}/carts/{{cartId}}/cart-line-items
+Authorization: Bearer d02683e3-9b4e-4a4a-bc46-ff76e408ba09
+Authenticated: 1612162831279222
+Content-Type: application/json; charset=utf-8
+Media-Type: application/vnd.helloworld.api.v1+json
+Channel-Type: HelloWorld
+Accept-Language: ko-Kr
+Device-Id: testdeviceid
+Os-Code: android
+Os-Version: 1.0.0
+App-Version: 1.0.0
+
+{
+  "shop" : {
+    "shopNo" : 10012149,
+    "serviceType" : "FIRST_PARTY",
+    "name" : "安兵衛 渋谷店"
+  },
+  "lineItem" : {
+    "productId":322,
+    "productName":"つけ麺",
+    "productType":"MENU",
+    "amount":1500,
+    "quantity": 2,
+    "salesAmount":1500,
+    "discountAmount":0
+  }
+}
+
+### 장바구니 수정 다른 물품
+PUT {{external-api}}/carts/{{cartId}}/cart-line-items
+Authorization: Bearer d02683e3-9b4e-4a4a-bc46-ff76e408ba09
+Authenticated: 1612162831279222
+Content-Type: application/json; charset=utf-8
+Media-Type: application/vnd.helloworld.api.v1+json
+Channel-Type: HelloWorld
+Accept-Language: ko-Kr
+Device-Id: testdeviceid
+Os-Code: android
+Os-Version: 1.0.0
+App-Version: 1.0.0
+
+{
+  "shop" : {
+    "shopNo" : 10012149,
+    "serviceType" : "FIRST_PARTY",
+    "name" : "安兵衛 渋谷店"
+  },
+  "lineItem" : {
+    "productId":323,
+    "productName":"つけ麺",
+    "productType":"MENU",
+    "amount":1500,
+    "quantity": 2,
+    "salesAmount":1500,
+    "discountAmount":0
+  }
+}
