@@ -1,27 +1,34 @@
 package com.helloworld.domain.order.service
 
-import com.helloworld.data.cart.mapper.CartMapstructMapper
 import com.helloworld.data.common.User
-import com.helloworld.data.order.mapper.OrderShopMapstructMapper
-import com.helloworld.domain.cart.Cart
-import com.helloworld.domain.order.OrderEntity
+import com.helloworld.domain.order.*
 import org.springframework.stereotype.Service
 
 @Service
 class DomainCommandOrderService(
-        private val queryOrderService: QueryOrderService,
         private val commandOrderService: CommandOrderService,
-        private val cartMapstructMapper: CartMapstructMapper,
-        private val shopMapstructMapper: OrderShopMapstructMapper
 ) {
-   fun create(user: User, cart: Cart): OrderEntity {
-      return commandOrderService.create(
-              channelType = user.channelType,
-              deviceId = user.deviceId,
-              accountId = user.accountId,
-              shop = shopMapstructMapper.map(cart.shop),
-              lineItems = mutableListOf(),
-              cartDiscounts = mutableListOf()
-      )
-   }
+    fun create(user: User,
+               orderUserContact: String,
+               orderUserNickname: String,
+               delivery: DeliveryEntity,
+               shop: OrderShopEntity,
+               lineItems: MutableList<LineItemEntity>,
+               cartDisCounts: MutableList<OrderCartDiscountEntity>
+    ): OrderEntity {
+
+        val order = commandOrderService.create(
+                channelType = user.channelType,
+                deviceId = user.deviceId,
+                accountId = user.accountId,
+                orderUserContact = orderUserContact,
+                orderUserNickname = orderUserNickname,
+                delivery = delivery,
+                shop = shop,
+                lineItems = lineItems,
+                cartDiscounts = cartDisCounts)
+
+         order.calculate()
+        return order
+    }
 }

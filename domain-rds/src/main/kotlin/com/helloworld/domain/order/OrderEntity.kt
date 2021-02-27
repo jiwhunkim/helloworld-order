@@ -41,7 +41,9 @@ class OrderEntity(
         @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
         @Fetch(FetchMode.SUBSELECT)
         @JoinColumn(name = "orderId", foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
-        var cartDiscounts: MutableList<CartDiscountEntity>
+        var cartDiscounts: MutableList<OrderCartDiscountEntity>
 ) {
+        fun calculate() {
 
+        }
 }
