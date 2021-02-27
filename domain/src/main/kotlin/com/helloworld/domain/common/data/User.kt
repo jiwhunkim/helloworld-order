@@ -1,4 +1,4 @@
-package com.helloworld.data.common
+package com.helloworld.domain.common.data
 
 data class User(
         var channelType: String,

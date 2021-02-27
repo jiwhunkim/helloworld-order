@@ -2,7 +2,6 @@ package com.helloworld.cart.v2.controller
 
 import com.helloworld.cart.service.CartApplicationService
 import com.helloworld.data.cart.CartDto
-import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestHeader

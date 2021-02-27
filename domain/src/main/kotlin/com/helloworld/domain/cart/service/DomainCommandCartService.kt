@@ -1,10 +1,10 @@
 package com.helloworld.domain.cart.service
 
-import com.helloworld.data.common.User
 import com.helloworld.domain.cart.Cart
 import com.helloworld.domain.cart.CartDiscount
 import com.helloworld.domain.cart.CartLineItem
 import com.helloworld.domain.cart.CartShop
+import com.helloworld.domain.common.data.User
 import org.springframework.stereotype.Service
 
 @Service

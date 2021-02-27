@@ -71,6 +71,7 @@ class CartRepositorySpec : DescribeSpec() {
             cart.addLineItem(cartLineItem)
 
             it("create") {
+                cart.calculate()
                 val result = cartRepository.save(cart)
                 result.shouldNotBe(null)
                 result.totalAmount.shouldBe(BigDecimal.valueOf(1500L))
