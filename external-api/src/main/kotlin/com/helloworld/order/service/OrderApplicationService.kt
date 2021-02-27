@@ -1,7 +1,6 @@
 package com.helloworld.order.service
 
 import com.helloworld.cart.data.CartOrderOpenRequestDto
-import com.helloworld.data.common.User
 import com.helloworld.data.common.mapper.AddressMapstructMapper
 import com.helloworld.data.common.mapper.GeoLocationMapstructMapper
 import com.helloworld.data.order.mapper.OrderCartDiscountMapstructMapper
@@ -9,6 +8,7 @@ import com.helloworld.data.order.mapper.OrderLineItemMapstructMapper
 import com.helloworld.data.order.mapper.OrderShopMapstructMapper
 import com.helloworld.domain.cart.Cart
 import com.helloworld.domain.cart.service.DomainQueryCartService
+import com.helloworld.domain.common.data.User
 import com.helloworld.domain.order.DeliveryEntity
 import com.helloworld.domain.order.GeoLocationEntity
 import com.helloworld.domain.order.service.DomainCommandOrderService

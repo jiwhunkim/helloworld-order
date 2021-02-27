@@ -6,11 +6,11 @@ import com.helloworld.data.cart.mapper.CartDiscountMapstructMapper
 import com.helloworld.data.cart.mapper.CartLineItemMapstructMapper
 import com.helloworld.data.cart.mapper.CartMapstructMapper
 import com.helloworld.data.cart.mapper.CartShopMapstructMapper
-import com.helloworld.data.common.User
 import com.helloworld.domain.cart.CartDiscount
 import com.helloworld.domain.cart.CartDiscountValueType
 import com.helloworld.domain.cart.service.DomainCommandCartService
 import com.helloworld.domain.cart.service.DomainQueryCartService
+import com.helloworld.domain.common.data.User
 import org.springframework.stereotype.Service
 import java.math.BigDecimal
 

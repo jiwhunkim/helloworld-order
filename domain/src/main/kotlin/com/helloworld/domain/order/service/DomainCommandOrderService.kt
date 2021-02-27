@@ -1,6 +1,6 @@
 package com.helloworld.domain.order.service
 
-import com.helloworld.data.common.User
+import com.helloworld.domain.common.data.User
 import com.helloworld.domain.order.*
 import org.springframework.stereotype.Service
 

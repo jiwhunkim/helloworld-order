@@ -1,4 +1,4 @@
-package com.helloworld.config.annotation
+package com.helloworld.config
 
 
 @Retention(AnnotationRetention.RUNTIME)

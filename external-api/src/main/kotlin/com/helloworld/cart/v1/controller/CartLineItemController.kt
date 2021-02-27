@@ -3,9 +3,9 @@ package com.helloworld.cart.v1.controller
 import com.helloworld.cart.data.CartLineItemRequestDto
 import com.helloworld.cart.service.CartApplicationService
 import com.helloworld.common.response.Response
-import com.helloworld.config.annotation.HelloworldUser
+import com.helloworld.config.HelloworldUser
 import com.helloworld.data.cart.CartDto
-import com.helloworld.data.common.User
+import com.helloworld.domain.common.data.User
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod

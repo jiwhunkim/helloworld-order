@@ -1,7 +1,7 @@
 package com.helloworld.config.resolver
 
-import com.helloworld.config.annotation.HelloworldUser
-import com.helloworld.data.common.User
+import com.helloworld.config.HelloworldUser
+import com.helloworld.domain.common.data.User
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.core.MethodParameter

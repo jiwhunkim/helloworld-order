@@ -20,9 +20,8 @@ dependencies {
 	implementation(project(":core-web"))
 	api(project(":domain-redis"))
 	api(project(":domain-rds"))
-	implementation(project(":domain-mapper"))
 
-//	implementation("org.springframework.boot:spring-boot-starter-data-redis")
+	implementation("javax.persistence:javax.persistence-api")
 }
 
 val jar: Jar by tasks
