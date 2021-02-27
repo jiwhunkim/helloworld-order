@@ -18,8 +18,11 @@ class OrderEntity(
         var orderUserContact: String,
         @Column
         var orderUserNickname: String,
-        @Column
+
+        @OneToOne(cascade = [CascadeType.ALL], optional = false /*fetch = FetchType.LAZY*/)
+        @JoinColumn(name="order_shop_id", nullable = false, insertable = true, updatable = false, foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
         var shop: OrderShopEntity,
+
         @Column
         var amount: BigDecimal = BigDecimal.ZERO,
         @Column
@@ -29,8 +32,8 @@ class OrderEntity(
         @Column
         var totalAmount: BigDecimal = BigDecimal.ZERO,
 
-        @OneToOne(cascade = [CascadeType.ALL])
-        @JoinColumn(name = "deliveryId", foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
+        @OneToOne(cascade = [CascadeType.ALL], optional = false /*fetch = FetchType.LAZY*/)
+        @JoinColumn(name="delivery_id", nullable = false, insertable = true, updatable = false, foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
         var delivery: DeliveryEntity,
 
         @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
