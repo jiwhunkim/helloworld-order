@@ -9,8 +9,7 @@ import org.mapstruct.NullValueMappingStrategy
 
 @Mapper(componentModel = "spring",
         uses = [
-            CartLineItemMapstructMapper::class,
-            CartLineItemOptionMapstructMapper::class
+            OrderLineItemOptionMapstructMapper::class
         ],
         nullValueMappingStrategy = NullValueMappingStrategy.RETURN_NULL
 )
