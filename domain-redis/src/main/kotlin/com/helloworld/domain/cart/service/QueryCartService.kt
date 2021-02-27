@@ -11,11 +11,11 @@ class QueryCartService(val cartRepository: CartRepository) {
         return cartRepository.findById(id).orElseThrow { NoSuchElementException() }
     }
     fun queryAccountIdOrderByUpdatedAtDesc(accountId: Long): Cart? {
-        return cartRepository.findAllByAccountId(accountId).toList().sortedByDescending { it.updatedAt }.firstOrNull()
+        return cartRepository.findAllByAccountId(accountId).toList().maxByOrNull { it.updatedAt }
     }
 
     fun findFirstByAccountIdOrderByUpdatedAtDesc(accountId: Long): Cart {
-        return cartRepository.findAllByAccountId(accountId).toList().sortedByDescending { it.updatedAt }.first()
+        return cartRepository.findAllByAccountId(accountId).toList().maxByOrNull { it.updatedAt } ?: throw NoSuchElementException()
     }
 
 }
