@@ -9,7 +9,7 @@ class DeliveryEntity(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         var id: Long? = null,
-        @Column
+        @Column(nullable = false, columnDefinition = "VARCHAR(20) NOT NULL")
         @Enumerated(EnumType.STRING)
         var type: DeliveryType,
         @Column
@@ -18,4 +18,5 @@ class DeliveryEntity(
         var location: GeoLocationEntity,
         @Column
         var distance: Double
-)
+) {
+}

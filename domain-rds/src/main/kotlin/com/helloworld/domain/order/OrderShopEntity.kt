@@ -7,14 +7,13 @@ class OrderShopEntity(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         var id: Long? = null,
-        @Column
+        @Column(nullable = false)
         var shopNo: Long,
-        @Column
+        @Column(nullable = false, columnDefinition = "VARCHAR(20) NOT NULL")
         var serviceType: String,
-        @Column
+        @Column(nullable = false, columnDefinition = "VARCHAR(100) NOT NULL")
         var name: String,
         @Column
         var ownerId: Long? = null
 ) {
-
 }
