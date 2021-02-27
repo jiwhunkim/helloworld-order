@@ -1,6 +1,7 @@
 package com.helloworld.cart.v1.controller
 
 import com.helloworld.cart.data.CartLineItemRequestDto
+import com.helloworld.cart.data.CartOrderOpenRequestDto
 import com.helloworld.cart.service.CartApplicationService
 import com.helloworld.common.response.Response
 import com.helloworld.config.annotation.HelloworldUser
@@ -10,7 +11,6 @@ import com.helloworld.order.service.OrderApplicationService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.net.URI
-import java.util.*
 
 @RestController(value = "CartControllerV1")
 @RequestMapping(
@@ -38,8 +38,9 @@ class CartController(
 
     @RequestMapping(path = ["/{cartId}/orders"], method = [RequestMethod.POST])
     fun open(@HelloworldUser user: User,
-             @PathVariable("cartId") cartId: String) {
-        val id = orderApplicationService.create(user, cartId)
+             @PathVariable("cartId") cartId: String,
+             @RequestBody cartOrderOpenRequestDto: CartOrderOpenRequestDto) {
+        val id = orderApplicationService.create(user, cartId, cartOrderOpenRequestDto)
         ResponseEntity.created(URI("http://localhst:8080/orders/${id}"))
     }
 }
