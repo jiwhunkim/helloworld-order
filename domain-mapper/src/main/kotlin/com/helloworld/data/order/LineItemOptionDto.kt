@@ -8,10 +8,10 @@ class LineItemOptionDto(
         val optionName: String,
         val optionGroupId: Long,
         val optionGroupName: String,
-        var sortNumber: Int,
-        var quantity: Int,
-        var amount: BigDecimal = BigDecimal.ZERO,
-        var salesAmount: BigDecimal = BigDecimal.ZERO,
-        var discountAmount: BigDecimal = BigDecimal.ZERO,
+        val sortNumber: Int,
+        val quantity: Int,
+        val amount: BigDecimal = BigDecimal.ZERO,
+        val salesAmount: BigDecimal = BigDecimal.ZERO,
+        val discountAmount: BigDecimal = BigDecimal.ZERO,
 ) {
 }

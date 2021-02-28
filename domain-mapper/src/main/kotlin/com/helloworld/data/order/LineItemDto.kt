@@ -3,16 +3,16 @@ package com.helloworld.data.order
 import java.math.BigDecimal
 
 data class LineItemDto(
-        var id: Long = 0,
-        var productId: Long,
-        var productName: String,
-        var productDescription: String? = null,
-        var productType: String,
-        var sortNumber: Int = 0,
-        var quantity: Int = 1,
-        var amount: BigDecimal = BigDecimal.ZERO,
-        var salesAmount: BigDecimal = BigDecimal.ZERO,
-        var discountAmount: BigDecimal = BigDecimal.ZERO,
-        var lineItemOptions: MutableList<LineItemOptionDto> = mutableListOf()
+        val id: Long = 0,
+        val productId: Long,
+        val productName: String,
+        val productDescription: String? = null,
+        val productType: String,
+        val sortNumber: Int = 0,
+        val quantity: Int = 1,
+        val amount: BigDecimal = BigDecimal.ZERO,
+        val salesAmount: BigDecimal = BigDecimal.ZERO,
+        val discountAmount: BigDecimal = BigDecimal.ZERO
 ) {
+    var lineItemOptions: MutableList<LineItemOptionDto> = mutableListOf()
 }

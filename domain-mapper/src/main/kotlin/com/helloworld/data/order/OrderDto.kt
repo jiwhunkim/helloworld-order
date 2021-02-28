@@ -15,9 +15,8 @@ data class OrderDto(
         val salesAmount: BigDecimal = BigDecimal.ZERO,
         val discountAmount: BigDecimal = BigDecimal.ZERO,
         val totalAmount: BigDecimal = BigDecimal.ZERO,
-        val delivery: DeliveryDto,
-        val lineItems: MutableList<LineItemDto>,
-        val cartDiscounts: MutableList<OrderCartDiscountDto>
+        val delivery: DeliveryDto
 ) {
-
+    var lineItems: MutableList<LineItemDto> = mutableListOf()
+    var cartDiscounts: MutableList<OrderCartDiscountDto> = mutableListOf()
 }

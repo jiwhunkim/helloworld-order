@@ -26,8 +26,8 @@ interface OrderMapstructMapper {
     fun map(cart: Cart): OrderEntity
 
     @Mappings(
-            Mapping(source = "lineItems", target = "lineItems", ignore = true),
-            Mapping(source = "cartDiscounts", target = "cartDiscounts", ignore = true)
+            Mapping(source = "lineItems", target = "lineItems"),
+            Mapping(source = "cartDiscounts", target = "cartDiscounts")
     )
     fun map(orderEntity: OrderEntity): OrderDto
 }
