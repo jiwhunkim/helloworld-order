@@ -17,11 +17,8 @@ configurations {
 }
 
 dependencies {
-	implementation(project(":core-web"))
-	api(project(":domain-redis"))
-	api(project(":domain-rds"))
-
-	implementation("javax.persistence:javax.persistence-api")
+	implementation(project(":domain-redis"))
+	implementation(project(":domain-rds"))
 }
 
 val jar: Jar by tasks

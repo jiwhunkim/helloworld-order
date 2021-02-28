@@ -7,7 +7,7 @@ class CartLineItem(
         var cartId: String? = null,
         val productId: Long,
         val productName: String,
-        val productDescription: String,
+        val productDescription: String? = null,
         val productType: String,
         var sortNumber: Int = 0,
         var quantity: Int = 1,

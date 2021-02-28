@@ -27,7 +27,7 @@ class OrderEntity(
         var orderUserNickname: String,
 
         @OneToOne(cascade = [CascadeType.ALL] /*fetch = FetchType.LAZY*/)
-        @JoinColumn(name="order_shop_id", nullable = false, insertable = true, updatable = false, foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
+        @JoinColumn(name = "order_shop_id", nullable = false, insertable = true, updatable = false, foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
         var shop: OrderShopEntity,
 
         @Column(nullable = false)
@@ -40,20 +40,41 @@ class OrderEntity(
         var totalAmount: BigDecimal = BigDecimal.ZERO,
 
         @OneToOne(cascade = [CascadeType.ALL] /*fetch = FetchType.LAZY*/)
-        @JoinColumn(name="delivery_id", nullable = false, insertable = true, updatable = false, foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
+        @JoinColumn(name = "delivery_id", nullable = false, insertable = true, updatable = false, foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
         var delivery: DeliveryEntity,
 
         @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
         @Fetch(FetchMode.SUBSELECT)
         @JoinColumn(name = "orderId", foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
-        var lineItems: MutableList<LineItemEntity>,
+        var lineItems: MutableList<LineItemEntity> = mutableListOf(),
 
         @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
         @Fetch(FetchMode.SUBSELECT)
         @JoinColumn(name = "orderId", foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
-        var cartDiscounts: MutableList<OrderCartDiscountEntity>
+        var cartDiscounts: MutableList<OrderCartDiscountEntity> = mutableListOf()
 ) {
-        fun calculate() {
 
-        }
+    fun addLineItem(lineItem: LineItemEntity) {
+        lineItem.sortNumber = lineItems.count()
+        lineItems.add(lineItem)
+        calculate()
+    }
+
+    fun addDiscount(cartDiscount: OrderCartDiscountEntity) {
+        cartDiscount.sortNumber = cartDiscounts.count()
+        cartDiscounts.add(cartDiscount)
+        calculate()
+    }
+
+    private fun calculateAmount(): BigDecimal = lineItems.sumOf { it.getTotalAmount() }
+    private fun calculateSalesAmount(): BigDecimal = lineItems.sumOf { it.getTotalSalesAmount() }
+    private fun calculateDiscountAmount(): BigDecimal = lineItems.sumOf { it.getTotalDiscountAmount() }
+
+    fun calculate() {
+        amount = calculateAmount()
+        salesAmount = calculateSalesAmount()
+        discountAmount = calculateDiscountAmount()
+        totalAmount = amount.minus(cartDiscounts.sumOf { it.calculatedValue })
+    }
+
 }

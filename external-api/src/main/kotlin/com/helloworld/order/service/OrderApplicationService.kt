@@ -29,13 +29,14 @@ class OrderApplicationService(
         val delivery = getDelivery(cartOrderOpenRequestDto, cart)
 
         val orderEntity = domainCommandOrderService.create(
-                user,
-                cartOrderOpenRequestDto.orderUserContact,
-                cartOrderOpenRequestDto.orderUserNickname,
-                delivery,
-                shopMapstructMapper.map(cart.shop),
-                cart.lineItems.map { lineItemMapstructMapper.map(it) }.toMutableList(),
-                cart.cartDiscounts.map { orderCartDiscountMapstructMapper.map(it) }.toMutableList()
+                user = user,
+                cartId = cart.id,
+                orderUserContact = cartOrderOpenRequestDto.orderUserContact,
+                orderUserNickname = cartOrderOpenRequestDto.orderUserNickname,
+                delivery = delivery,
+                shop = shopMapstructMapper.map(cart.shop),
+                lineItems = cart.lineItems.map { lineItemMapstructMapper.map(it) }.toMutableList(),
+                cartDisCounts = cart.cartDiscounts.map { orderCartDiscountMapstructMapper.map(it) }.toMutableList()
         )
         return orderEntity.id!!
     }

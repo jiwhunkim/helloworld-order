@@ -9,6 +9,7 @@ class DomainCommandOrderService(
         private val commandOrderService: CommandOrderService,
 ) {
     fun create(user: User,
+               cartId: String,
                orderUserContact: String,
                orderUserNickname: String,
                delivery: DeliveryEntity,
@@ -21,6 +22,7 @@ class DomainCommandOrderService(
                 channelType = user.channelType,
                 deviceId = user.deviceId,
                 accountId = user.accountId,
+                cartId = cartId,
                 orderUserContact = orderUserContact,
                 orderUserNickname = orderUserNickname,
                 delivery = delivery,
