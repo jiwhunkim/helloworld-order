@@ -3,6 +3,7 @@ package com.helloworld.order.service
 import com.helloworld.cart.data.CartOrderOpenRequestDto
 import com.helloworld.data.common.mapper.AddressMapstructMapper
 import com.helloworld.data.common.mapper.GeoLocationMapstructMapper
+import com.helloworld.data.order.OrderDto
 import com.helloworld.data.order.mapper.OrderMapstructMapper
 import com.helloworld.domain.cart.Cart
 import com.helloworld.domain.cart.service.DomainQueryCartService
@@ -11,16 +12,22 @@ import com.helloworld.domain.order.DeliveryEntity
 import com.helloworld.domain.order.GeoLocationEntity
 import com.helloworld.domain.order.OrderEntity
 import com.helloworld.domain.order.service.DomainCommandOrderService
+import com.helloworld.domain.order.service.DomainQueryOrderService
 import org.springframework.stereotype.Service
 
 @Service
 class OrderApplicationService(
         private val domainQueryCartService: DomainQueryCartService,
+        private val domainQueryOrderService: DomainQueryOrderService,
         private val domainCommandOrderService: DomainCommandOrderService,
         private val orderMapstructMapper: OrderMapstructMapper,
         private val addressMapstructMapper: AddressMapstructMapper,
         private val geoLocationMapstructMapper: GeoLocationMapstructMapper
 ) {
+    fun find(id: Long): OrderDto {
+        return orderMapstructMapper.map(domainQueryOrderService.findById(id))
+    }
+
     fun create(user: User, cartId: String, cartOrderOpenRequestDto: CartOrderOpenRequestDto): Long {
         val cart = domainQueryCartService.findById(cartId)
         val delivery = getDelivery(cartOrderOpenRequestDto, cart)

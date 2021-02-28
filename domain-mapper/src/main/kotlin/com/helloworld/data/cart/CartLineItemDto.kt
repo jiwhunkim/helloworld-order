@@ -1,9 +1,7 @@
 package com.helloworld.data.cart
 
 import com.fasterxml.jackson.annotation.JsonInclude
-import com.helloworld.domain.cart.CartLineItemOption
 import java.math.BigDecimal
-import java.util.ArrayList
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class CartLineItemDto(
@@ -17,5 +15,5 @@ data class CartLineItemDto(
         var amount: BigDecimal? = BigDecimal.ZERO,
         var salesAmount: BigDecimal? = BigDecimal.ZERO,
         var discountAmount: BigDecimal? = BigDecimal.ZERO,
-        var lineItemOptions: MutableList<CartLineItemOption> = mutableListOf()
+        var lineItemOptions: MutableList<CartLineItemOptionDto> = mutableListOf()
 )

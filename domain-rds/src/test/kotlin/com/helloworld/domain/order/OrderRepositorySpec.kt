@@ -15,7 +15,6 @@ import org.springframework.context.annotation.Import
 import org.springframework.test.annotation.Rollback
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
-import org.springframework.test.context.TestPropertySource
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import java.math.BigDecimal
 
@@ -74,6 +73,7 @@ class OrderRepositorySpec : DescribeSpec() {
                         discountAmount = BigDecimal(1000)
                 )
                 order.addLineItem(lineItem)
+                order.calculate()
                 val result = orderRepository.save(order)
                 result.amount.shouldBeGreaterThan(BigDecimal.ZERO)
             }
@@ -109,8 +109,8 @@ class OrderRepositorySpec : DescribeSpec() {
                 )
                 val result = orderRepository.save(order)
 
-                val search = orderRepository.findById(result.id!!).get()
-                search.id.shouldBe(result.id!!)
+                val search = orderRepository.findById(result.id).get()
+                search.id.shouldBe(result.id)
             }
         }
     }

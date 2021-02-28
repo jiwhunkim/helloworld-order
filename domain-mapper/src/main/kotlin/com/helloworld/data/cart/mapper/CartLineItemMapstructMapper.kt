@@ -2,13 +2,17 @@ package com.helloworld.data.cart.mapper
 
 import com.helloworld.data.cart.CartLineItemDto
 import com.helloworld.domain.cart.CartLineItem
-import org.mapstruct.*
+import org.mapstruct.Mapper
+import org.mapstruct.MappingTarget
+import org.mapstruct.NullValueMappingStrategy
+import org.mapstruct.ReportingPolicy
 
 @Mapper(componentModel = "spring",
         uses = [
             CartLineItemOptionMapstructMapper::class
         ],
-        nullValueMappingStrategy = NullValueMappingStrategy.RETURN_NULL
+        unmappedTargetPolicy = ReportingPolicy.IGNORE,
+        nullValueMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT
 )
 interface CartLineItemMapstructMapper {
     fun map(cartLineItem: CartLineItem): CartLineItemDto

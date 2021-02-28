@@ -1,10 +1,6 @@
 package com.helloworld.data.cart
 
-import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonInclude
-import com.helloworld.domain.cart.Cart
-import com.helloworld.domain.cart.CartDiscount
-import com.helloworld.domain.cart.CartLineItem
 import com.helloworld.domain.cart.CartShop
 import java.math.BigDecimal
 import java.time.ZonedDateTime
@@ -16,8 +12,8 @@ data class CartDto(
         val deviceId: String,
         val accountId: Long,
         val shop: CartShop,
-        val lineItems: MutableList<CartLineItem>,
-        val cartDiscounts: MutableList<CartDiscount>,
+        val lineItems: MutableList<CartLineItemDto>,
+        val cartDiscounts: MutableList<CartDiscountDto>,
         val amount: BigDecimal,
         val salesAmount: BigDecimal,
         val discountAmount: BigDecimal,
