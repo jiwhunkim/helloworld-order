@@ -8,12 +8,12 @@ import javax.persistence.*
 class DeliveryEntity(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        var id: Long? = null,
+        var id: Long = 0,
         @Column(nullable = false, columnDefinition = "VARCHAR(20) NOT NULL")
         @Enumerated(EnumType.STRING)
         var type: DeliveryType,
         @Column
-        val address: AddressEntity,
+        var address: AddressEntity,
         @Column
         var location: GeoLocationEntity,
         @Column

@@ -3,14 +3,13 @@ package com.helloworld.order.service
 import com.helloworld.cart.data.CartOrderOpenRequestDto
 import com.helloworld.data.common.mapper.AddressMapstructMapper
 import com.helloworld.data.common.mapper.GeoLocationMapstructMapper
-import com.helloworld.data.order.mapper.OrderCartDiscountMapstructMapper
-import com.helloworld.data.order.mapper.OrderLineItemMapstructMapper
-import com.helloworld.data.order.mapper.OrderShopMapstructMapper
+import com.helloworld.data.order.mapper.OrderMapstructMapper
 import com.helloworld.domain.cart.Cart
 import com.helloworld.domain.cart.service.DomainQueryCartService
 import com.helloworld.domain.common.data.User
 import com.helloworld.domain.order.DeliveryEntity
 import com.helloworld.domain.order.GeoLocationEntity
+import com.helloworld.domain.order.OrderEntity
 import com.helloworld.domain.order.service.DomainCommandOrderService
 import org.springframework.stereotype.Service
 
@@ -18,27 +17,36 @@ import org.springframework.stereotype.Service
 class OrderApplicationService(
         private val domainQueryCartService: DomainQueryCartService,
         private val domainCommandOrderService: DomainCommandOrderService,
-        private val shopMapstructMapper: OrderShopMapstructMapper,
+        private val orderMapstructMapper: OrderMapstructMapper,
         private val addressMapstructMapper: AddressMapstructMapper,
-        private val geoLocationMapstructMapper: GeoLocationMapstructMapper,
-        private val lineItemMapstructMapper: OrderLineItemMapstructMapper,
-        private val orderCartDiscountMapstructMapper: OrderCartDiscountMapstructMapper
+        private val geoLocationMapstructMapper: GeoLocationMapstructMapper
 ) {
     fun create(user: User, cartId: String, cartOrderOpenRequestDto: CartOrderOpenRequestDto): Long {
         val cart = domainQueryCartService.findById(cartId)
         val delivery = getDelivery(cartOrderOpenRequestDto, cart)
 
-        val orderEntity = domainCommandOrderService.create(
-                user = user,
-                cartId = cart.id,
+        var order = buildOrder(user = user,
                 orderUserContact = cartOrderOpenRequestDto.orderUserContact,
                 orderUserNickname = cartOrderOpenRequestDto.orderUserNickname,
-                delivery = delivery,
-                shop = shopMapstructMapper.map(cart.shop),
-                lineItems = cart.lineItems.map { lineItemMapstructMapper.map(it) }.toMutableList(),
-                cartDisCounts = cart.cartDiscounts.map { orderCartDiscountMapstructMapper.map(it) }.toMutableList()
-        )
-        return orderEntity.id!!
+                cart = cart,
+                delivery = delivery)
+        val result = domainCommandOrderService.create(order)
+        result.calculate()
+        return result.id
+    }
+
+    private fun buildOrder(user: User,
+                           orderUserContact: String,
+                           orderUserNickname: String,
+                           cart: Cart,
+                           delivery: DeliveryEntity): OrderEntity {
+        val orderEntity = orderMapstructMapper.map(cart)
+        orderEntity.orderUserContact = orderUserContact
+        orderEntity.orderUserNickname = orderUserNickname
+        orderEntity.delivery = delivery
+        orderEntity.deviceId = user.deviceId
+        orderEntity.accountId = user.accountId
+        return orderEntity
     }
 
     private fun getDelivery(cartOrderOpenRequestDto: CartOrderOpenRequestDto, cart: Cart): DeliveryEntity {
@@ -50,7 +58,12 @@ class OrderApplicationService(
         val deliveryLocation = geoLocationMapstructMapper.map(deliveryLocationDto)
         val distance = getDistanceBetweenShopAndUser(shopNo = cart.shop.shopNo, location = deliveryLocation)
 
-        return DeliveryEntity(null, deliveryDto.type, address, deliveryLocation, distance = distance)
+        return DeliveryEntity(
+                type = deliveryDto.type,
+                address = address,
+                location = deliveryLocation,
+                distance = distance
+        )
     }
 
     fun getDistanceBetweenShopAndUser(shopNo: Long, location: GeoLocationEntity): Double {

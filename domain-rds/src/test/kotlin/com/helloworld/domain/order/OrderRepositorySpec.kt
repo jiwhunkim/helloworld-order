@@ -25,6 +25,7 @@ import java.math.BigDecimal
 @DataJpaTest
 @Import(RdsConfig::class)
 @ActiveProfiles("test")
+@Rollback(false)
 class OrderRepositorySpec : DescribeSpec() {
     @Autowired
     lateinit var orderRepository: OrderRepository
@@ -32,20 +33,17 @@ class OrderRepositorySpec : DescribeSpec() {
     init {
         describe(".save") {
             val shop = OrderShopEntity(
-                    id = null,
                     shopNo = 1L,
                     serviceType = "serviceType",
                     name = "name"
             )
             val delivery = DeliveryEntity(
-                    id = null,
                     type = DeliveryType.DELIVERY,
                     address = AddressEntity("basic", "detail", "zipCode"),
                     location = GeoLocationEntity(34.0, 34.0),
                     distance = 1000.0
             )
             val order = OrderEntity(
-                    id = null,
                     deviceId = "test",
                     accountId = 0L,
                     cartId = "cartId",
@@ -84,20 +82,17 @@ class OrderRepositorySpec : DescribeSpec() {
         describe("findById") {
             it("find properly") {
                 val shop = OrderShopEntity(
-                        id = null,
                         shopNo = 1L,
                         serviceType = "serviceType",
                         name = "name"
                 )
                 val delivery = DeliveryEntity(
-                        id = null,
                         type = DeliveryType.DELIVERY,
                         address = AddressEntity("basic", "detail", "zipCode"),
                         location = GeoLocationEntity(34.0, 34.0),
                         distance = 1000.0
                 )
                 val order = OrderEntity(
-                        id = null,
                         deviceId = "test",
                         accountId = 0L,
                         cartId = "cartId",

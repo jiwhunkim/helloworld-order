@@ -7,7 +7,7 @@ import javax.persistence.*
 class LineItemOptionEntity(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        var id: Long? = null,
+        var id: Long = 0,
         @Column
         var lineItemId: Long? = null,
         @Column

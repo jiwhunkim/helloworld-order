@@ -19,6 +19,8 @@ configurations {
 dependencies {
 	implementation(project(":domain-redis"))
 	implementation(project(":domain-rds"))
+
+	implementation("javax.persistence:javax.persistence-api")
 }
 
 val jar: Jar by tasks

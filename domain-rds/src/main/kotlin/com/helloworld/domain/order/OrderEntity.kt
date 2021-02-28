@@ -9,7 +9,7 @@ import javax.persistence.*
 class OrderEntity(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        var id: Long? = null,
+        var id: Long = 0,
 
         @Column(nullable = false)
         var deviceId: String,
@@ -55,15 +55,19 @@ class OrderEntity(
 ) {
 
     fun addLineItem(lineItem: LineItemEntity) {
+        if (lineItems == null) {
+            lineItems = mutableListOf()
+        }
         lineItem.sortNumber = lineItems.count()
         lineItems.add(lineItem)
-        calculate()
     }
 
     fun addDiscount(cartDiscount: OrderCartDiscountEntity) {
+        if(cartDiscounts == null) {
+            cartDiscounts = mutableListOf()
+        }
         cartDiscount.sortNumber = cartDiscounts.count()
         cartDiscounts.add(cartDiscount)
-        calculate()
     }
 
     private fun calculateAmount(): BigDecimal = lineItems.sumOf { it.getTotalAmount() }

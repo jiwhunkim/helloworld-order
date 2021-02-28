@@ -10,7 +10,7 @@ import javax.persistence.*
 class LineItemEntity(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        var id: Long? = null,
+        var id: Long = 0,
         @Column
         var productId: Long,
         @Column
@@ -39,6 +39,9 @@ class LineItemEntity(
         fun getTotalDiscountAmount(): BigDecimal = discountAmount.plus(lineItemOptions.sumOf { it.getTotalDiscountAmount() }).multiply(quantity.toBigDecimal())
 
         fun addLineItemOption(lineItemOption: LineItemOptionEntity) {
+                if(lineItemOptions == null) {
+                        lineItemOptions = mutableListOf()
+                }
                 lineItemOptions.add(lineItemOption)
         }
 }

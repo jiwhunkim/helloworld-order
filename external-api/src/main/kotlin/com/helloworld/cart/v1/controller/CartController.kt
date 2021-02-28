@@ -39,8 +39,8 @@ class CartController(
     @RequestMapping(path = ["/{cartId}/orders"], method = [RequestMethod.POST])
     fun open(@HelloworldUser user: User,
              @PathVariable("cartId") cartId: String,
-             @RequestBody cartOrderOpenRequestDto: CartOrderOpenRequestDto) {
+             @RequestBody cartOrderOpenRequestDto: CartOrderOpenRequestDto): ResponseEntity<Nothing> {
         val id = orderApplicationService.create(user, cartId, cartOrderOpenRequestDto)
-        ResponseEntity.created(URI("http://localhst:8080/orders/${id}"))
+        return ResponseEntity.created(URI("http://localhost:8080/orders/${id}")).build()
     }
 }

@@ -7,15 +7,15 @@ import javax.persistence.*
 class OrderCartDiscountEntity(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        var id: Long? = null,
+        var id: Long = 0,
         @Column
-        val mappingId: String,
+        var mappingId: String,
         @Column
-        val mappingName: String,
+        var mappingName: String,
         @Column
-        val valueType: DiscountValueType,
+        var valueType: DiscountValueType,
         @Column
-        val value: BigDecimal = BigDecimal.ZERO,
+        var value: BigDecimal = BigDecimal.ZERO,
         @Column
         var calculatedValue: BigDecimal = BigDecimal.ZERO,
         @Column
