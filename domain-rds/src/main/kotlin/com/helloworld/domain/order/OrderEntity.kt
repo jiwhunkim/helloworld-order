@@ -10,29 +10,36 @@ class OrderEntity(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         var id: Long? = null,
-        @Column
+
+        @Column(nullable = false)
         var deviceId: String,
-        @Column
+
+        @Column(nullable = false)
         var accountId: Long,
-        @Column
+
+        @Column(nullable = false)
+        var cartId: String,
+
+        @Column(nullable = false)
         var orderUserContact: String,
-        @Column
+
+        @Column(nullable = false)
         var orderUserNickname: String,
 
-        @OneToOne(cascade = [CascadeType.ALL], optional = false /*fetch = FetchType.LAZY*/)
+        @OneToOne(cascade = [CascadeType.ALL] /*fetch = FetchType.LAZY*/)
         @JoinColumn(name="order_shop_id", nullable = false, insertable = true, updatable = false, foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
         var shop: OrderShopEntity,
 
-        @Column
+        @Column(nullable = false)
         var amount: BigDecimal = BigDecimal.ZERO,
-        @Column
+        @Column(nullable = false)
         var salesAmount: BigDecimal = BigDecimal.ZERO,
-        @Column
+        @Column(nullable = false)
         var discountAmount: BigDecimal = BigDecimal.ZERO,
-        @Column
+        @Column(nullable = false)
         var totalAmount: BigDecimal = BigDecimal.ZERO,
 
-        @OneToOne(cascade = [CascadeType.ALL], optional = false /*fetch = FetchType.LAZY*/)
+        @OneToOne(cascade = [CascadeType.ALL] /*fetch = FetchType.LAZY*/)
         @JoinColumn(name="delivery_id", nullable = false, insertable = true, updatable = false, foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
         var delivery: DeliveryEntity,
 
