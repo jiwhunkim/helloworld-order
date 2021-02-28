@@ -41,6 +41,6 @@ class CartController(
              @PathVariable("cartId") cartId: String,
              @RequestBody cartOrderOpenRequestDto: CartOrderOpenRequestDto): ResponseEntity<Nothing> {
         val id = orderApplicationService.create(user, cartId, cartOrderOpenRequestDto)
-        return ResponseEntity.created(URI("http://localhost:8080/orders/${id}")).build()
+        return ResponseEntity.created(URI("http://localhost:8080/order/orders/${id}")).build()
     }
 }
