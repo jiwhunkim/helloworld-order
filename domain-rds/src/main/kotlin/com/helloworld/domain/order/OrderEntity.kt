@@ -49,8 +49,8 @@ class OrderEntity(
         var lineItems: MutableList<LineItemEntity> = mutableListOf(),
 
         @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-        @Fetch(FetchMode.SUBSELECT)
         @JoinColumn(name = "orderId", foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
+        @Fetch(FetchMode.SUBSELECT)
         var cartDiscounts: MutableList<OrderCartDiscountEntity> = mutableListOf()
 ) {
 

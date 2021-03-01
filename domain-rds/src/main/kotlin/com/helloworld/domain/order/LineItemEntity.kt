@@ -3,7 +3,6 @@ package com.helloworld.domain.order
 import org.hibernate.annotations.Fetch
 import org.hibernate.annotations.FetchMode
 import java.math.BigDecimal
-import java.util.ArrayList
 import javax.persistence.*
 
 @Entity(name = "lineItems")
@@ -32,6 +31,7 @@ class LineItemEntity(
 
         @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
         @JoinColumn(name = "lineItemId", foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
+        @Fetch(FetchMode.SUBSELECT)
         var lineItemOptions: MutableList<LineItemOptionEntity> = mutableListOf()
 ) {
         fun getTotalAmount(): BigDecimal = amount.plus(lineItemOptions.sumOf { it.getTotalAmount() }).multiply(quantity.toBigDecimal())

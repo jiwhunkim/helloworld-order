@@ -14,6 +14,7 @@ import com.helloworld.domain.order.OrderEntity
 import com.helloworld.domain.order.service.DomainCommandOrderService
 import com.helloworld.domain.order.service.DomainQueryOrderService
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class OrderApplicationService(
@@ -24,6 +25,8 @@ class OrderApplicationService(
         private val addressMapstructMapper: AddressMapstructMapper,
         private val geoLocationMapstructMapper: GeoLocationMapstructMapper
 ) {
+
+    @Transactional(readOnly = true)
     fun find(id: Long): OrderDto {
         return orderMapstructMapper.map(domainQueryOrderService.findById(id))
     }
