@@ -60,6 +60,7 @@ subprojects {
 		"testImplementation"("io.kotest:kotest-property:4.4.1") // for kotest property test
 		"testImplementation"("io.kotest:kotest-extensions-spring:4.4.1")
 		"testImplementation"("io.kotest:kotest-extensions-testcontainers:4.4.1")
+
 		"testImplementation"("io.mockk:mockk")
 		"testImplementation"("com.ninja-squad:springmockk:3.0.1")
 
@@ -67,7 +68,7 @@ subprojects {
 			exclude(module = "mockito-core")
 		}
 
-		"testImplementation"("org.testcontainers:junit-jupiter:1.15.2")
+		"testImplementation"("org.testcontainers:junit-jupiter")
 		"testImplementation"("org.junit.jupiter:junit-jupiter-api")
 		"testImplementation"("org.junit.jupiter:junit-jupiter-params")
 		"testRuntimeOnly"("org.junit.jupiter:junit-jupiter-engine")
