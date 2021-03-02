@@ -41,6 +41,7 @@ subprojects {
 	the<io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension>().apply {
 		imports {
 			mavenBom("org.springframework.cloud:spring-cloud-dependencies:Hoxton.SR8")
+			mavenBom("org.testcontainers:testcontainers-bom:1.15.2")
 		}
 	}
 
@@ -58,10 +59,17 @@ subprojects {
 		"testImplementation"("io.kotest:kotest-assertions-core:4.4.1") // for kotest core jvm assertions
 		"testImplementation"("io.kotest:kotest-property:4.4.1") // for kotest property test
 		"testImplementation"("io.kotest:kotest-extensions-spring:4.4.1")
+		"testImplementation"("io.kotest:kotest-extensions-testcontainers:4.4.1")
 		"testImplementation"("io.mockk:mockk")
 		"testImplementation"("com.ninja-squad:springmockk:3.0.1")
+
 		"testImplementation"("org.springframework.boot:spring-boot-starter-test") {
 			exclude(module = "mockito-core")
 		}
+
+		"testImplementation"("org.testcontainers:junit-jupiter:1.15.2")
+		"testImplementation"("org.junit.jupiter:junit-jupiter-api")
+		"testImplementation"("org.junit.jupiter:junit-jupiter-params")
+		"testRuntimeOnly"("org.junit.jupiter:junit-jupiter-engine")
 	}
 }
