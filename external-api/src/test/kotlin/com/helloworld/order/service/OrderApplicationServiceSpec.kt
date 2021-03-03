@@ -7,7 +7,6 @@ import com.helloworld.order.data.OrderUpdateRequestDto
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.bigdecimal.shouldBeGreaterThan
 import org.junit.jupiter.api.extension.ExtendWith
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.ConfigDataApplicationContextInitializer
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.ContextConfiguration
@@ -17,9 +16,7 @@ import java.math.BigDecimal
 @ExtendWith(SpringExtension::class)
 @ContextConfiguration(initializers = [ConfigDataApplicationContextInitializer::class], classes = [ExternalApplication::class])
 @ActiveProfiles(profiles = ["test"])
-class OrderApplicationServiceSpec : DescribeSpec() {
-    @Autowired
-    lateinit var orderApplicationService: OrderApplicationService
+class OrderApplicationServiceSpec(val orderApplicationService: OrderApplicationService) : DescribeSpec() {
 
     init {
         describe("applyCoupon") {

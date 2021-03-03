@@ -8,7 +8,6 @@ import io.kotest.matchers.bigdecimal.shouldBeGreaterThan
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.extension.ExtendWith
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.context.annotation.Import
@@ -25,9 +24,7 @@ import java.math.BigDecimal
 @Import(RdsConfig::class)
 @ActiveProfiles("test")
 @Rollback(false)
-class OrderRepositorySpec : DescribeSpec() {
-    @Autowired
-    lateinit var orderRepository: OrderRepository
+class OrderRepositorySpec(val orderRepository: OrderRepository) : DescribeSpec() {
 
     init {
         describe(".save") {
