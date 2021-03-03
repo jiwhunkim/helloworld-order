@@ -23,7 +23,7 @@ class OrderApplicationServiceSpec : DescribeSpec() {
 
     init {
         describe("applyCoupon") {
-            it("coupon code equal") {
+            it("order total amount discounted") {
                 val shop = OrderShopEntity(
                         shopNo = 1L,
                         serviceType = "serviceType",
