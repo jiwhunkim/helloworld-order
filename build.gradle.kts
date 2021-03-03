@@ -28,6 +28,7 @@ allprojects {
 subprojects {
 	repositories {
 		mavenCentral()
+		maven("https://kotlin.bintray.com/kotlinx/")
 	}
 
 	apply {
@@ -49,6 +50,7 @@ subprojects {
 		"implementation"("com.fasterxml.jackson.module:jackson-module-kotlin")
 		"implementation"("org.jetbrains.kotlin:kotlin-reflect")
 		"implementation"("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+		"implementation"("org.jetbrains.kotlinx:kotlinx-collections-immutable-jvm:0.3.3")
 		"developmentOnly"("org.springframework.boot:spring-boot-devtools")
 //		"annotationProcessor"("org.springframework.boot:spring-boot-configuration-processor")
 		"kapt"("org.springframework.boot:spring-boot-configuration-processor")

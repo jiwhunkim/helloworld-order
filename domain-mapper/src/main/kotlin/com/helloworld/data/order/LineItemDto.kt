@@ -14,5 +14,5 @@ data class LineItemDto(
         val salesAmount: BigDecimal = BigDecimal.ZERO,
         val discountAmount: BigDecimal = BigDecimal.ZERO
 ) {
-    var lineItemOptions: MutableList<LineItemOptionDto> = mutableListOf()
+    val lineItemOptions: MutableList<LineItemOptionDto> = mutableListOf()
 }
