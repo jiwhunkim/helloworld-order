@@ -11,4 +11,8 @@ class CommandOrderService(private val orderRepository: OrderRepository) {
     fun create(order: OrderEntity): OrderEntity {
         return orderRepository.save(order)
     }
+
+    fun update(order: OrderEntity): OrderEntity {
+        return orderRepository.save(order)
+    }
 }

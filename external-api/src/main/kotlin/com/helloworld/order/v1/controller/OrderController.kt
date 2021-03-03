@@ -4,11 +4,9 @@ import com.helloworld.common.response.Response
 import com.helloworld.config.HelloworldUser
 import com.helloworld.data.order.OrderDto
 import com.helloworld.domain.common.data.User
+import com.helloworld.order.data.OrderUpdateRequestDto
 import com.helloworld.order.service.OrderApplicationService
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController(value = "OrderControllerV1")
 @RequestMapping(
@@ -23,5 +21,14 @@ class OrderController(private val orderApplicationService: OrderApplicationServi
             @PathVariable("id") id: Long,
     ): Response<OrderDto> {
         return Response(orderApplicationService.find(id))
+    }
+
+    @PatchMapping(path = ["/{id}"])
+    fun update(
+            @HelloworldUser user: User,
+            @PathVariable("id") id: Long,
+            @RequestBody orderUpdateRequestDto: OrderUpdateRequestDto
+    ): Response<OrderDto> {
+        return Response(orderApplicationService.update(id, orderUpdateRequestDto))
     }
 }

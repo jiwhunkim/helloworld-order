@@ -51,7 +51,12 @@ class OrderEntity(
         @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
         @JoinColumn(name = "orderId", foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
         @Fetch(FetchMode.SUBSELECT)
-        var cartDiscounts: MutableList<OrderCartDiscountEntity> = mutableListOf()
+        var cartDiscounts: MutableList<OrderCartDiscountEntity> = mutableListOf(),
+
+        @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+        @JoinColumn(name = "orderId", foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
+        @Fetch(FetchMode.SUBSELECT)
+        var payDiscounts: MutableList<OrderPayDiscountEntity> = mutableListOf()
 ) {
 
     fun addLineItem(lineItem: LineItemEntity) {
@@ -62,12 +67,20 @@ class OrderEntity(
         lineItems.add(lineItem)
     }
 
-    fun addDiscount(cartDiscount: OrderCartDiscountEntity) {
-        if(cartDiscounts == null) {
+    fun addCartDiscount(cartDiscount: OrderCartDiscountEntity) {
+        if (cartDiscounts == null) {
             cartDiscounts = mutableListOf()
         }
         cartDiscount.sortNumber = cartDiscounts.count()
         cartDiscounts.add(cartDiscount)
+    }
+
+    fun addPayDiscount(payDiscount: OrderPayDiscountEntity) {
+        if (payDiscount == null) {
+            payDiscounts = mutableListOf()
+        }
+        payDiscount.sortNumber = payDiscounts.count()
+        payDiscounts.add(payDiscount)
     }
 
     private fun calculateAmount(): BigDecimal = lineItems.sumOf { it.getTotalAmount() }
@@ -78,7 +91,7 @@ class OrderEntity(
         amount = calculateAmount()
         salesAmount = calculateSalesAmount()
         discountAmount = calculateDiscountAmount()
-        totalAmount = amount.minus(cartDiscounts.sumOf { it.calculatedValue })
+        totalAmount = amount.minus(cartDiscounts.sumOf { it.calculatedValue }).minus(payDiscounts.sumOf { it.calculatedValue })
     }
 
 }

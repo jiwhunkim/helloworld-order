@@ -8,13 +8,13 @@ import com.helloworld.data.order.mapper.OrderMapstructMapper
 import com.helloworld.domain.cart.Cart
 import com.helloworld.domain.cart.service.DomainQueryCartService
 import com.helloworld.domain.common.data.User
-import com.helloworld.domain.order.DeliveryEntity
-import com.helloworld.domain.order.GeoLocationEntity
-import com.helloworld.domain.order.OrderEntity
+import com.helloworld.domain.order.*
 import com.helloworld.domain.order.service.DomainCommandOrderService
 import com.helloworld.domain.order.service.DomainQueryOrderService
+import com.helloworld.order.data.OrderUpdateRequestDto
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.math.BigDecimal
 
 @Service
 class OrderApplicationService(
@@ -29,6 +29,45 @@ class OrderApplicationService(
     @Transactional(readOnly = true)
     fun find(id: Long): OrderDto {
         return orderMapstructMapper.map(domainQueryOrderService.findById(id))
+    }
+
+    fun update(id: Long, orderUpdateRequestDto: OrderUpdateRequestDto): OrderDto {
+        var target = domainQueryOrderService.findById(id)
+
+        applyUserInfo(orderUpdateRequestDto, target)
+        applyCoupon(orderUpdateRequestDto, target)
+
+        val result = domainCommandOrderService.save(target)
+        return orderMapstructMapper.map(result)
+    }
+
+    fun applyUserInfo(orderUpdateRequestDto: OrderUpdateRequestDto, target: OrderEntity) {
+        orderUpdateRequestDto.orderUserContact?.let { target.orderUserContact = it }
+    }
+
+    fun applyCoupon(orderUpdateRequestDto: OrderUpdateRequestDto, target: OrderEntity) {
+        val code = orderUpdateRequestDto.coupon ?: return
+        if(target.payDiscounts.firstOrNull { it.mappingId == code } != null) {
+            return
+        }
+
+        if (validateCoupon(orderUpdateRequestDto.coupon)) {
+            target.addPayDiscount(
+                    OrderPayDiscountEntity(
+                            id = null,
+                            mappingId = "mappingId",
+                            mappingName = "mappingName",
+                            valueType = DiscountValueType.AMOUNT,
+                            value = BigDecimal(1000),
+                            calculatedValue = BigDecimal(1000)
+                    )
+            )
+        }
+        target.calculate()
+    }
+
+    private fun validateCoupon(code: String): Boolean {
+        return true
     }
 
     fun create(user: User, cartId: String, cartOrderOpenRequestDto: CartOrderOpenRequestDto): Long {
