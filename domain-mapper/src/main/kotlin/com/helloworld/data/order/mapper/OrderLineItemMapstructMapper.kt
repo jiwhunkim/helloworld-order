@@ -1,7 +1,6 @@
 package com.helloworld.data.order.mapper
 
-import com.helloworld.data.cart.mapper.CartLineItemMapstructMapper
-import com.helloworld.data.cart.mapper.CartLineItemOptionMapstructMapper
+import com.helloworld.data.order.LineItemDto
 import com.helloworld.domain.cart.CartLineItem
 import com.helloworld.domain.order.LineItemEntity
 import org.mapstruct.Mapper
@@ -12,9 +11,11 @@ import org.mapstruct.ReportingPolicy
         uses = [
             OrderLineItemOptionMapstructMapper::class
         ],
-        nullValueMappingStrategy = NullValueMappingStrategy.RETURN_NULL,
-        unmappedTargetPolicy = ReportingPolicy.IGNORE
+        unmappedTargetPolicy = ReportingPolicy.IGNORE,
+        nullValueMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT
 )
 interface OrderLineItemMapstructMapper {
     fun map(cartLineItem: CartLineItem): LineItemEntity
+
+    fun map(lineItem: LineItemEntity): LineItemDto
 }

@@ -26,7 +26,7 @@ class CartController(
         return Response(cartDto)
     }
 
-    @RequestMapping(path = ["/{cartId}/cart-line-items"], method = [RequestMethod.PUT])
+    @PutMapping(path = ["/{cartId}/cart-line-items"])
     fun upsert(
             @HelloworldUser user: User,
             @PathVariable("cartId") cartId: String,
@@ -36,11 +36,11 @@ class CartController(
         return Response(cartDto)
     }
 
-    @RequestMapping(path = ["/{cartId}/orders"], method = [RequestMethod.POST])
+    @PostMapping(path = ["/{cartId}/orders"])
     fun open(@HelloworldUser user: User,
              @PathVariable("cartId") cartId: String,
-             @RequestBody cartOrderOpenRequestDto: CartOrderOpenRequestDto) {
+             @RequestBody cartOrderOpenRequestDto: CartOrderOpenRequestDto): ResponseEntity<Nothing> {
         val id = orderApplicationService.create(user, cartId, cartOrderOpenRequestDto)
-        ResponseEntity.created(URI("http://localhst:8080/orders/${id}"))
+        return ResponseEntity.created(URI("http://localhost:8080/order/orders/${id}")).build()
     }
 }

@@ -9,6 +9,6 @@ class AddressEntity(
         var basic: String,
         @Column(nullable = false)
         var detail: String,
-        var zipCode: String
+        var zipCode: String? = null
 ) {
 }

@@ -1,36 +1,14 @@
 package com.helloworld.domain.order.service
 
-import com.helloworld.domain.order.*
+import com.helloworld.domain.order.OrderEntity
+import com.helloworld.domain.order.OrderRepository
 import org.springframework.stereotype.Service
-import java.math.BigDecimal
+import org.springframework.transaction.annotation.Transactional
 
 @Service
-class CommandOrderService {
-    fun create(channelType: String,
-               deviceId: String,
-               accountId: Long,
-               cartId: String,
-               orderUserContact: String,
-               orderUserNickname: String,
-               delivery: DeliveryEntity,
-               shop: OrderShopEntity,
-               lineItems: MutableList<LineItemEntity>,
-               cartDiscounts: MutableList<OrderCartDiscountEntity>): OrderEntity {
-        return OrderEntity(
-                id = null,
-                deviceId = deviceId,
-                accountId = accountId,
-                cartId = cartId,
-                orderUserContact = orderUserContact,
-                orderUserNickname = orderUserNickname,
-                shop = shop,
-                amount= BigDecimal.ZERO,
-                salesAmount= BigDecimal.ZERO,
-                discountAmount = BigDecimal.ZERO,
-                totalAmount = BigDecimal.ZERO,
-                delivery = delivery,
-                lineItems = lineItems,
-                cartDiscounts = cartDiscounts
-        )
+@Transactional
+class CommandOrderService(private val orderRepository: OrderRepository) {
+    fun create(order: OrderEntity): OrderEntity {
+        return orderRepository.save(order)
     }
 }

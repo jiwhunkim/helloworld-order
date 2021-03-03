@@ -6,7 +6,7 @@ import javax.persistence.*
 class OrderShopEntity(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        var id: Long? = null,
+        var id: Long = 0,
         @Column(nullable = false)
         var shopNo: Long,
         @Column(nullable = false, columnDefinition = "VARCHAR(20) NOT NULL")

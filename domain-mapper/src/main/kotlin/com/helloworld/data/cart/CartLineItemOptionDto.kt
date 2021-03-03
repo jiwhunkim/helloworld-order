@@ -10,10 +10,10 @@ class CartLineItemOptionDto(
         val optionName: String,
         val optionGroupId: Long,
         val optionGroupName: String,
-        var sortNumber: Int = 0,
-        var quantity: Int = 1,
-        var amount: BigDecimal,
-        var salesAmount: BigDecimal,
-        var discountAmount: BigDecimal,
+        var sortNumber: Int,
+        var quantity: Int,
+        var amount: BigDecimal = BigDecimal.ZERO,
+        var salesAmount: BigDecimal = BigDecimal.ZERO,
+        var discountAmount: BigDecimal = BigDecimal.ZERO,
 ) {
 }
