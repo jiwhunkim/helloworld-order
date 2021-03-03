@@ -4,7 +4,7 @@ import java.math.BigDecimal
 import javax.persistence.*
 
 @Entity(name = "pay_discounts")
-class PayDiscountEntity(
+class OrderPayDiscountEntity(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         var id: Long? = null,

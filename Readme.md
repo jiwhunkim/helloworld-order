@@ -9,10 +9,11 @@
     - delete (O)
     
 - order
-    - create (X)
-    - detail (X)
-    - update (X)
-    - detail (X)
+    - create (O)
+    - detail (O)
+    - update (O)
+    - pay (X)
+    - cancel (X)
     
 ## Module 
 
