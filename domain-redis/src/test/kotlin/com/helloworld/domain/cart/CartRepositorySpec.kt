@@ -1,30 +1,21 @@
 package com.helloworld.domain.cart
 
-import com.helloworld.DomainRedisApplication
 import com.helloworld.redis.config.RedisConfig
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.ints.shouldBeGreaterThan
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
-import org.junit.jupiter.api.extension.ExtendWith
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.data.redis.DataRedisTest
 import org.springframework.context.annotation.Import
 import org.springframework.test.context.ActiveProfiles
-import org.springframework.test.context.ContextConfiguration
-import org.springframework.test.context.junit.jupiter.SpringExtension
 import java.math.BigDecimal
 import java.time.ZonedDateTime
 
 
-@ExtendWith(SpringExtension::class)
-@ContextConfiguration(classes = [DomainRedisApplication::class])
 @DataRedisTest
 @Import(RedisConfig::class)
 @ActiveProfiles("test")
-class CartRepositorySpec : DescribeSpec() {
-    @Autowired
-    lateinit var cartRepository: CartRepository
+class CartRepositorySpec(private val cartRepository: CartRepository) : DescribeSpec() {
 
     init {
         describe("cart") {
@@ -89,6 +80,5 @@ class CartRepositorySpec : DescribeSpec() {
                 cartRepository.findAllByAccountId(accountId).toList().size.shouldBeGreaterThan(0)
             }
         }
-
     }
 }
