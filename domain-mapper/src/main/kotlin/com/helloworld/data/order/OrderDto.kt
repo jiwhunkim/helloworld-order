@@ -1,8 +1,10 @@
 package com.helloworld.data.order
 
+import com.fasterxml.jackson.annotation.JsonInclude
 import com.helloworld.domain.order.OrderShopEntity
 import java.math.BigDecimal
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 data class OrderDto(
         val id: Long = 0,
         val deviceId: String,
