@@ -1,4 +1,4 @@
-package com.helloworld.domain.order
+package com.helloworld.domain.pay
 
 import java.math.BigDecimal
 import javax.persistence.*
@@ -10,7 +10,7 @@ class PayLineEntity(
         var id: Long = 0,
 
         @Column
-        var payId: Long,
+        var payId: Long? = null,
 
         @Column
         var method: String,

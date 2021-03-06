@@ -1,5 +1,6 @@
 package com.helloworld.domain.order
 
+import com.helloworld.domain.pay.PayEntity
 import org.hibernate.annotations.Fetch
 import org.hibernate.annotations.FetchMode
 import java.math.BigDecimal
@@ -38,8 +39,8 @@ class OrderEntity(
         var discountAmount: BigDecimal = BigDecimal.ZERO,
         @Column(nullable = false)
         var totalAmount: BigDecimal = BigDecimal.ZERO,
-        @Column(nullable = false)
-        var billingAmount: BigDecimal = BigDecimal.ZERO,
+        @Column
+        var billingAmount: BigDecimal? = null,
 
         @OneToOne(cascade = [CascadeType.ALL] /*fetch = FetchType.LAZY*/)
         @JoinColumn(name = "deliveryId", nullable = false, insertable = true, updatable = false, foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
@@ -96,7 +97,9 @@ class OrderEntity(
         amount = calculateAmount()
         salesAmount = calculateSalesAmount()
         discountAmount = calculateDiscountAmount()
-        totalAmount = amount.minus(cartDiscounts.sumOf { it.calculatedValue }).minus(payDiscounts.sumOf { it.calculatedValue })
+        val totalCartDiscount: BigDecimal = cartDiscounts?.sumOf { it.calculatedValue } ?: BigDecimal.ZERO
+        val totalPayDiscount: BigDecimal = payDiscounts?.sumOf { it.calculatedValue } ?: BigDecimal.ZERO
+        totalAmount = amount.minus(totalCartDiscount).minus(totalPayDiscount)
     }
 
 }

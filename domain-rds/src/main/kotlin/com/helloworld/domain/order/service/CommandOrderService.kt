@@ -8,11 +8,7 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 @Transactional
 class CommandOrderService(private val orderRepository: OrderRepository) {
-    fun create(order: OrderEntity): OrderEntity {
-        return orderRepository.save(order)
-    }
-
-    fun update(order: OrderEntity): OrderEntity {
+    fun save(order: OrderEntity): OrderEntity {
         return orderRepository.save(order)
     }
 }

@@ -7,11 +7,7 @@ import org.springframework.stereotype.Service
 class DomainCommandOrderService(
         private val commandOrderService: CommandOrderService,
 ) {
-    fun create(order: OrderEntity): OrderEntity {
-        return commandOrderService.create(order)
-    }
-
     fun save(order: OrderEntity): OrderEntity {
-        return commandOrderService.update(order)
+        return commandOrderService.save(order)
     }
 }

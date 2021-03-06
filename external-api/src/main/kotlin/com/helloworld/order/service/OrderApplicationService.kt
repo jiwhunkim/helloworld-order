@@ -31,14 +31,14 @@ class OrderApplicationService(
         return orderMapstructMapper.map(domainQueryOrderService.findById(id))
     }
 
+    @Transactional
     fun update(id: Long, orderUpdateRequestDto: OrderUpdateRequestDto): OrderDto {
         var target = domainQueryOrderService.findById(id)
 
         applyUserInfo(orderUpdateRequestDto, target)
         applyCoupon(orderUpdateRequestDto, target)
 
-        val result = domainCommandOrderService.save(target)
-        return orderMapstructMapper.map(result)
+        return orderMapstructMapper.map(target)
     }
 
     fun applyUserInfo(orderUpdateRequestDto: OrderUpdateRequestDto, target: OrderEntity) {
@@ -79,8 +79,8 @@ class OrderApplicationService(
                 orderUserNickname = cartOrderOpenRequestDto.orderUserNickname,
                 cart = cart,
                 delivery = delivery)
-        val result = domainCommandOrderService.create(order)
-        result.calculate()
+        order.calculate()
+        val result = domainCommandOrderService.save(order)
         return result.id
     }
 
