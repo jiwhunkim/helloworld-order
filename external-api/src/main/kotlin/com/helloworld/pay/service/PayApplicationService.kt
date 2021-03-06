@@ -21,14 +21,9 @@ class PayApplicationService(
     fun pay(orderId: Long, payRequestDto: PayRequestDto): OrderDto {
         val order = domainQueryOrderService.findById(orderId)
 
-        val payLines = payRequestDto.payLines.map {
-            PayLineEntity(
-                    method = it.method,
-                    amount = it.amount
-            )
-        }
+        val payLines = payRequestDto.payLines.map { PayLineEntity(method = it.method, amount = it.amount) }
         val pay = domainCommandPayService.pay(order, payLines)
-        order.pay = pay
+        order.bindPay(pay)
         return orderMapstructMapper.map(order)
     }
 }

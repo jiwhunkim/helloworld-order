@@ -89,6 +89,10 @@ class OrderEntity(
         payDiscounts.add(payDiscount)
     }
 
+    fun bindPay(pay: PayEntity) {
+        this.pay = pay
+    }
+
     private fun calculateAmount(): BigDecimal = lineItems.sumOf { it.getTotalAmount() }
     private fun calculateSalesAmount(): BigDecimal = lineItems.sumOf { it.getTotalSalesAmount() }
     private fun calculateDiscountAmount(): BigDecimal = lineItems.sumOf { it.getTotalDiscountAmount() }
