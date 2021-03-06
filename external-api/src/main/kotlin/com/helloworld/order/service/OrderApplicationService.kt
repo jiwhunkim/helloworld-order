@@ -9,6 +9,7 @@ import com.helloworld.domain.cart.Cart
 import com.helloworld.domain.cart.service.DomainQueryCartService
 import com.helloworld.domain.common.data.User
 import com.helloworld.domain.order.*
+import com.helloworld.domain.order.enum.OrderStatus
 import com.helloworld.domain.order.service.DomainCommandOrderService
 import com.helloworld.domain.order.service.DomainQueryOrderService
 import com.helloworld.order.data.OrderUpdateRequestDto
@@ -95,6 +96,7 @@ class OrderApplicationService(
         orderEntity.delivery = delivery
         orderEntity.deviceId = user.deviceId
         orderEntity.accountId = user.accountId
+        orderEntity.status = OrderStatus.INITIALIZE
         return orderEntity
     }
 

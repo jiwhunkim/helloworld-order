@@ -26,4 +26,17 @@ class PayApplicationService(
         order.bindPay(pay)
         return orderMapstructMapper.map(order)
     }
+
+    @Transactional
+    fun cancel(orderId: Long): OrderDto {
+        val order = domainQueryOrderService.findById(orderId)
+        if(!order.ableCancel()) {
+            throw IllegalArgumentException("Order cannot canceled")
+        }
+
+        domainCommandPayService.cancel(order.pay)
+        order.cancel()
+
+        return orderMapstructMapper.map(order)
+    }
 }

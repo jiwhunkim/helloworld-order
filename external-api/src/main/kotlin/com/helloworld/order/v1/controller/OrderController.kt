@@ -45,4 +45,12 @@ class OrderController(
     ): Response<OrderDto> {
         return Response(payApplicationService.pay(id, payRequestDto))
     }
+
+    @PostMapping(path = ["/{id}/cancel"])
+    fun cancel(
+            @HelloworldUser user: User,
+            @PathVariable("id") id: Long
+    ): Response<OrderDto> {
+        return Response(payApplicationService.cancel(id))
+    }
 }

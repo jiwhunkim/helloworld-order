@@ -31,4 +31,8 @@ class DomainCommandPayService(
 
         return commandPayService.save(pay)
     }
+
+    fun cancel(pay: PayEntity) {
+        pay.cancel()
+    }
 }

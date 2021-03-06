@@ -22,13 +22,18 @@ class PayEntity(
         @JoinColumn(name = "payId", foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
         var payLines: MutableList<PayLineEntity> = mutableListOf()
 ) {
-        @Column
-        lateinit var status: String
+    @Column
+    lateinit var status: String
 
-        @Column
-        lateinit var approvedAt: ZonedDateTime
+    @Column
+    lateinit var approvedAt: ZonedDateTime
 
-        @Column
-        lateinit var canceledAt: ZonedDateTime
+    @Column
+    lateinit var canceledAt: ZonedDateTime
 
+    fun cancel() {
+        this.status = "CANCEL"
+        payLines.forEach { it.status = "CANCEL" }
+        this.canceledAt = ZonedDateTime.now()
+    }
 }

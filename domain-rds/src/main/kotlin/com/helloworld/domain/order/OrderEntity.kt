@@ -1,5 +1,6 @@
 package com.helloworld.domain.order
 
+import com.helloworld.domain.order.enum.OrderStatus
 import com.helloworld.domain.pay.PayEntity
 import org.hibernate.annotations.Fetch
 import org.hibernate.annotations.FetchMode
@@ -26,6 +27,10 @@ class OrderEntity(
 
         @Column(nullable = false)
         var orderUserNickname: String,
+
+        @Column(nullable = false, columnDefinition = "VARCHAR(20) NOT NULL")
+        @Enumerated(EnumType.STRING)
+        var status: OrderStatus = OrderStatus.INITIALIZE,
 
         @OneToOne(cascade = [CascadeType.ALL] /*fetch = FetchType.LAZY*/)
         @JoinColumn(name = "orderShopId", nullable = false, insertable = true, updatable = false, foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
@@ -90,7 +95,16 @@ class OrderEntity(
     }
 
     fun bindPay(pay: PayEntity) {
+        this.status = OrderStatus.OPEN
         this.pay = pay
+    }
+
+    fun ableCancel(): Boolean {
+        return this.status == OrderStatus.OPEN
+    }
+
+    fun cancel() {
+        this.status = OrderStatus.CANCEL
     }
 
     private fun calculateAmount(): BigDecimal = lineItems.sumOf { it.getTotalAmount() }
