@@ -27,7 +27,7 @@ class OrderEntity(
         var orderUserNickname: String,
 
         @OneToOne(cascade = [CascadeType.ALL] /*fetch = FetchType.LAZY*/)
-        @JoinColumn(name = "order_shop_id", nullable = false, insertable = true, updatable = false, foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
+        @JoinColumn(name = "orderShopId", nullable = false, insertable = true, updatable = false, foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
         var shop: OrderShopEntity,
 
         @Column(nullable = false)
@@ -38,9 +38,11 @@ class OrderEntity(
         var discountAmount: BigDecimal = BigDecimal.ZERO,
         @Column(nullable = false)
         var totalAmount: BigDecimal = BigDecimal.ZERO,
+        @Column(nullable = false)
+        var billingAmount: BigDecimal = BigDecimal.ZERO,
 
         @OneToOne(cascade = [CascadeType.ALL] /*fetch = FetchType.LAZY*/)
-        @JoinColumn(name = "delivery_id", nullable = false, insertable = true, updatable = false, foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
+        @JoinColumn(name = "deliveryId", nullable = false, insertable = true, updatable = false, foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
         var delivery: DeliveryEntity,
 
         @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
@@ -58,6 +60,9 @@ class OrderEntity(
         @Fetch(FetchMode.SUBSELECT)
         var payDiscounts: MutableList<OrderPayDiscountEntity> = mutableListOf()
 ) {
+    @OneToOne(mappedBy = "order")
+    @JoinColumn(name = "orderId", foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
+    lateinit var pay: PayEntity
 
     fun addLineItem(lineItem: LineItemEntity) {
         if (lineItems == null) {
