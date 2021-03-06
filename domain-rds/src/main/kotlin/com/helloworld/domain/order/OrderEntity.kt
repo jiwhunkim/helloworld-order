@@ -1,5 +1,7 @@
 package com.helloworld.domain.order
 
+import com.helloworld.domain.order.enum.OrderStatus
+import com.helloworld.domain.pay.PayEntity
 import org.hibernate.annotations.Fetch
 import org.hibernate.annotations.FetchMode
 import java.math.BigDecimal
@@ -26,8 +28,12 @@ class OrderEntity(
         @Column(nullable = false)
         var orderUserNickname: String,
 
+        @Column(nullable = false, columnDefinition = "VARCHAR(20) NOT NULL")
+        @Enumerated(EnumType.STRING)
+        var status: OrderStatus = OrderStatus.INITIALIZE,
+
         @OneToOne(cascade = [CascadeType.ALL] /*fetch = FetchType.LAZY*/)
-        @JoinColumn(name = "order_shop_id", nullable = false, insertable = true, updatable = false, foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
+        @JoinColumn(name = "orderShopId", nullable = false, insertable = true, updatable = false, foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
         var shop: OrderShopEntity,
 
         @Column(nullable = false)
@@ -38,9 +44,11 @@ class OrderEntity(
         var discountAmount: BigDecimal = BigDecimal.ZERO,
         @Column(nullable = false)
         var totalAmount: BigDecimal = BigDecimal.ZERO,
+        @Column
+        var billingAmount: BigDecimal? = null,
 
         @OneToOne(cascade = [CascadeType.ALL] /*fetch = FetchType.LAZY*/)
-        @JoinColumn(name = "delivery_id", nullable = false, insertable = true, updatable = false, foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
+        @JoinColumn(name = "deliveryId", nullable = false, insertable = true, updatable = false, foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
         var delivery: DeliveryEntity,
 
         @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
@@ -58,6 +66,9 @@ class OrderEntity(
         @Fetch(FetchMode.SUBSELECT)
         var payDiscounts: MutableList<OrderPayDiscountEntity> = mutableListOf()
 ) {
+    @OneToOne(mappedBy = "order")
+    @JoinColumn(name = "orderId", foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
+    lateinit var pay: PayEntity
 
     fun addLineItem(lineItem: LineItemEntity) {
         if (lineItems == null) {
@@ -83,6 +94,19 @@ class OrderEntity(
         payDiscounts.add(payDiscount)
     }
 
+    fun bindPay(pay: PayEntity) {
+        this.status = OrderStatus.OPEN
+        this.pay = pay
+    }
+
+    fun ableCancel(): Boolean {
+        return this.status == OrderStatus.OPEN
+    }
+
+    fun cancel() {
+        this.status = OrderStatus.CANCEL
+    }
+
     private fun calculateAmount(): BigDecimal = lineItems.sumOf { it.getTotalAmount() }
     private fun calculateSalesAmount(): BigDecimal = lineItems.sumOf { it.getTotalSalesAmount() }
     private fun calculateDiscountAmount(): BigDecimal = lineItems.sumOf { it.getTotalDiscountAmount() }
@@ -91,7 +115,9 @@ class OrderEntity(
         amount = calculateAmount()
         salesAmount = calculateSalesAmount()
         discountAmount = calculateDiscountAmount()
-        totalAmount = amount.minus(cartDiscounts.sumOf { it.calculatedValue }).minus(payDiscounts.sumOf { it.calculatedValue })
+        val totalCartDiscount: BigDecimal = cartDiscounts?.sumOf { it.calculatedValue } ?: BigDecimal.ZERO
+        val totalPayDiscount: BigDecimal = payDiscounts?.sumOf { it.calculatedValue } ?: BigDecimal.ZERO
+        totalAmount = amount.minus(totalCartDiscount).minus(totalPayDiscount)
     }
 
 }

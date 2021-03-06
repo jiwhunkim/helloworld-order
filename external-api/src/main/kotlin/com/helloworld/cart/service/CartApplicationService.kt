@@ -6,8 +6,10 @@ import com.helloworld.data.cart.mapper.CartDiscountMapstructMapper
 import com.helloworld.data.cart.mapper.CartLineItemMapstructMapper
 import com.helloworld.data.cart.mapper.CartMapstructMapper
 import com.helloworld.data.cart.mapper.CartShopMapstructMapper
+import com.helloworld.domain.cart.Cart
 import com.helloworld.domain.cart.CartDiscount
 import com.helloworld.domain.cart.CartDiscountValueType
+import com.helloworld.domain.cart.CartLineItem
 import com.helloworld.domain.cart.service.DomainCommandCartService
 import com.helloworld.domain.cart.service.DomainQueryCartService
 import com.helloworld.domain.common.data.User
@@ -68,15 +70,8 @@ class CartApplicationService(
                 amount = BigDecimal.valueOf(100L)
         )
 
-        cart.lineItems.firstOrNull { it == sourceLineItem }
-                ?. let { cartLineItemMapstructMapper.map(sourceLineItem, it) }
-                ?: run { cart.addLineItem(sourceLineItem) }
-
-        cart.cartDiscounts.firstOrNull { it == sourceDiscount }
-                ?. let { cartDiscountMapstructMapper.map(sourceDiscount, it) }
-                ?: run { cart.cartDiscounts.clear()
-                         cart.addDiscount(sourceDiscount)
-                    }
+        upsertLineItem(cart, sourceLineItem)
+        upsertCartDiscount(cart, sourceDiscount)
 
         val result = domainCommandCartService.update(
                 user,
@@ -85,5 +80,20 @@ class CartApplicationService(
         )
 
         return cartMapstructMapper.map(result)
+    }
+
+    private fun upsertCartDiscount(cart: Cart, sourceDiscount: CartDiscount) {
+        cart.cartDiscounts.firstOrNull { it == sourceDiscount }
+                ?. let { cartDiscountMapstructMapper.map(sourceDiscount, it) }
+                ?: run {
+                    cart.cartDiscounts.clear()
+                    cart.addDiscount(sourceDiscount)
+                }
+    }
+
+    private fun upsertLineItem(cart: Cart, sourceLineItem: CartLineItem) {
+        cart.lineItems.firstOrNull { it == sourceLineItem }
+                ?. let { cartLineItemMapstructMapper.map(sourceLineItem, it) }
+                ?: run { cart.addLineItem(sourceLineItem) }
     }
 }

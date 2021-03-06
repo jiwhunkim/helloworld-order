@@ -9,6 +9,7 @@ import com.helloworld.domain.cart.Cart
 import com.helloworld.domain.cart.service.DomainQueryCartService
 import com.helloworld.domain.common.data.User
 import com.helloworld.domain.order.*
+import com.helloworld.domain.order.enum.OrderStatus
 import com.helloworld.domain.order.service.DomainCommandOrderService
 import com.helloworld.domain.order.service.DomainQueryOrderService
 import com.helloworld.order.data.OrderUpdateRequestDto
@@ -31,14 +32,14 @@ class OrderApplicationService(
         return orderMapstructMapper.map(domainQueryOrderService.findById(id))
     }
 
+    @Transactional
     fun update(id: Long, orderUpdateRequestDto: OrderUpdateRequestDto): OrderDto {
         var target = domainQueryOrderService.findById(id)
 
         applyUserInfo(orderUpdateRequestDto, target)
         applyCoupon(orderUpdateRequestDto, target)
 
-        val result = domainCommandOrderService.save(target)
-        return orderMapstructMapper.map(result)
+        return orderMapstructMapper.map(target)
     }
 
     fun applyUserInfo(orderUpdateRequestDto: OrderUpdateRequestDto, target: OrderEntity) {
@@ -79,8 +80,8 @@ class OrderApplicationService(
                 orderUserNickname = cartOrderOpenRequestDto.orderUserNickname,
                 cart = cart,
                 delivery = delivery)
-        val result = domainCommandOrderService.create(order)
-        result.calculate()
+        order.calculate()
+        val result = domainCommandOrderService.save(order)
         return result.id
     }
 
@@ -95,6 +96,7 @@ class OrderApplicationService(
         orderEntity.delivery = delivery
         orderEntity.deviceId = user.deviceId
         orderEntity.accountId = user.accountId
+        orderEntity.status = OrderStatus.INITIALIZE
         return orderEntity
     }
 

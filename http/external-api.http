@@ -150,3 +150,54 @@ Device-Id: testdeviceid
 Os-Code: android
 Os-Version: 1.0.0
 App-Version: 1.0.0
+
+### 주문 수정
+PATCH {{location}}
+Authorization: Bearer d02683e3-9b4e-4a4a-bc46-ff76e408ba09
+Authenticated: 1612162831279222
+Content-Type: application/json; charset=utf-8
+Media-Type: application/vnd.helloworld.api.v1+json
+Channel-Type: HelloWorld
+Accept-Language: ko-Kr
+Device-Id: testdeviceid
+Os-Code: android
+Os-Version: 1.0.0
+App-Version: 1.0.0
+
+{
+  "orderUserContact": "orderUserContact",
+  "coupon": null
+}
+
+### 주문 결제
+POST {{location}}/pay
+Authorization: Bearer d02683e3-9b4e-4a4a-bc46-ff76e408ba09
+Authenticated: 1612162831279222
+Content-Type: application/json; charset=utf-8
+Media-Type: application/vnd.helloworld.api.v1+json
+Channel-Type: HelloWorld
+Accept-Language: ko-Kr
+Device-Id: testdeviceid
+Os-Code: android
+Os-Version: 1.0.0
+App-Version: 1.0.0
+
+{
+  "payLines": [{
+    "method": "CREDIT_CARD",
+    "amount": 1400
+  }]
+}
+
+### 주문 취소
+POST {{location}}/cancel
+Authorization: Bearer d02683e3-9b4e-4a4a-bc46-ff76e408ba09
+Authenticated: 1612162831279222
+Content-Type: application/json; charset=utf-8
+Media-Type: application/vnd.helloworld.api.v1+json
+Channel-Type: HelloWorld
+Accept-Language: ko-Kr
+Device-Id: testdeviceid
+Os-Code: android
+Os-Version: 1.0.0
+App-Version: 1.0.0
