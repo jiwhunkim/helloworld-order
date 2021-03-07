@@ -12,10 +12,12 @@ import io.mockk.every
 import io.mockk.mockk
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
+import org.springframework.transaction.annotation.Transactional
 import java.math.BigDecimal
 
 @SpringBootTest(classes = [DomainApplication::class])
 @ActiveProfiles(value = ["test"])
+@Transactional
 class DomainCommandPayServiceSpec(
         val domainCommandOrderService: DomainCommandOrderService,
         val domainCommandPayService: DomainCommandPayService
@@ -43,7 +45,7 @@ class DomainCommandPayServiceSpec(
                 val mockDelivery = mockk<DeliveryEntity> {
                     every { type } returns DeliveryType.DELIVERY
                     every { address } returns mockAddress
-                    every { location } returns  mockLocation
+                    every { location } returns mockLocation
                     every { distance } returns 1000.0
                 }
 
