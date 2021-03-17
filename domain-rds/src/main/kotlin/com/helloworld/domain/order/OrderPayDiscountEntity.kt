@@ -13,6 +13,7 @@ class OrderPayDiscountEntity(
         @Column
         var mappingName: String,
         @Column
+        @Enumerated(EnumType.STRING)
         var valueType: DiscountValueType,
         @Column
         var value: BigDecimal = BigDecimal.ZERO,
