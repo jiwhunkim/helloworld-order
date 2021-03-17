@@ -26,13 +26,17 @@ class DomainCommandPayService(
         val pay = PayEntity(
                 amount = order.billingAmount!!,
                 order = order,
-                payLines = payLines.toMutableList()
         )
+
+        payLines.forEach {
+            pay.addPayLine(it)
+        }
 
         return commandPayService.save(pay)
     }
 
-    fun cancel(pay: PayEntity) {
+    fun cancel(pay: PayEntity): PayEntity {
         pay.cancel()
+        return pay
     }
 }

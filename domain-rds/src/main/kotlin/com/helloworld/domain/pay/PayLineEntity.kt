@@ -10,14 +10,15 @@ class PayLineEntity(
         var id: Long = 0,
 
         @Column
-        var payId: Long? = null,
-
-        @Column
         var method: String,
 
         @Column
         var amount: BigDecimal = BigDecimal.ZERO
 ) {
+        @ManyToOne
+        @JoinColumn(name = "payId", nullable = false, foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
+        lateinit var pay: PayEntity
+
         @Column
         lateinit var status: String
 }

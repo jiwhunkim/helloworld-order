@@ -11,7 +11,8 @@ import org.mapstruct.*
             OrderShopMapstructMapper::class,
             DeliveryMapstructMapper::class,
             OrderLineItemMapstructMapper::class,
-            OrderCartDiscountMapstructMapper::class
+            OrderCartDiscountMapstructMapper::class,
+            OrderPayDiscountMapstructMapper::class
         ],
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
         nullValueMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT,
@@ -26,8 +27,6 @@ interface OrderMapstructMapper {
     fun map(cart: Cart): OrderEntity
 
     @Mappings(
-            Mapping(source = "lineItems", target = "lineItems"),
-            Mapping(source = "cartDiscounts", target = "cartDiscounts")
     )
     fun map(orderEntity: OrderEntity): OrderDto
 }

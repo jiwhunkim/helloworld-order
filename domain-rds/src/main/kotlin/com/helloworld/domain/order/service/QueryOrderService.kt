@@ -8,9 +8,12 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 @Transactional(readOnly = true)
 class QueryOrderService(
-        private val orderRepository: OrderRepository
+    private val orderRepository: OrderRepository
 ) {
     fun findById(id: Long): OrderEntity {
-        return orderRepository.findById(id).orElseThrow { NoSuchElementException() }
+        var order: OrderEntity = orderRepository.findById(id).orElseThrow { NoSuchElementException() }
+        order.cartDiscounts.size
+        order.payDiscounts.size
+        return order
     }
 }

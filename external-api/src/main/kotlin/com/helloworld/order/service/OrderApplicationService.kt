@@ -27,7 +27,6 @@ class OrderApplicationService(
         private val geoLocationMapstructMapper: GeoLocationMapstructMapper
 ) {
 
-    @Transactional(readOnly = true)
     fun find(id: Long): OrderDto {
         return orderMapstructMapper.map(domainQueryOrderService.findById(id))
     }

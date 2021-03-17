@@ -69,36 +69,37 @@ class OrderRepositorySpec(val orderRepository: OrderRepository) : DescribeSpec()
         }
 
         describe("findById") {
+            val shop = OrderShopEntity(
+                shopNo = 1L,
+                serviceType = "serviceType",
+                name = "name"
+            )
+            val delivery = DeliveryEntity(
+                type = DeliveryType.DELIVERY,
+                address = AddressEntity("basic", "detail", "zipCode"),
+                location = GeoLocationEntity(34.0, 34.0),
+                distance = 1000.0
+            )
+            val order = OrderEntity(
+                deviceId = "test",
+                accountId = 0L,
+                cartId = "cartId",
+                orderUserContact = "contact",
+                orderUserNickname = "nickname",
+                shop = shop,
+                amount = BigDecimal.ZERO,
+                salesAmount = BigDecimal.ZERO,
+                discountAmount = BigDecimal.ZERO,
+                totalAmount = BigDecimal.ZERO,
+                delivery = delivery,
+                lineItems = mutableListOf(),
+                cartDiscounts = mutableListOf()
+            )
+            val result = orderRepository.save(order)
             it("find properly") {
-                val shop = OrderShopEntity(
-                        shopNo = 1L,
-                        serviceType = "serviceType",
-                        name = "name"
-                )
-                val delivery = DeliveryEntity(
-                        type = DeliveryType.DELIVERY,
-                        address = AddressEntity("basic", "detail", "zipCode"),
-                        location = GeoLocationEntity(34.0, 34.0),
-                        distance = 1000.0
-                )
-                val order = OrderEntity(
-                        deviceId = "test",
-                        accountId = 0L,
-                        cartId = "cartId",
-                        orderUserContact = "contact",
-                        orderUserNickname = "nickname",
-                        shop = shop,
-                        amount = BigDecimal.ZERO,
-                        salesAmount = BigDecimal.ZERO,
-                        discountAmount = BigDecimal.ZERO,
-                        totalAmount = BigDecimal.ZERO,
-                        delivery = delivery,
-                        lineItems = mutableListOf(),
-                        cartDiscounts = mutableListOf()
-                )
-                val result = orderRepository.save(order)
-
                 val search = orderRepository.findById(result.id).get()
+                search.cartDiscounts
+                search.payDiscounts
                 search.id.shouldBe(result.id)
             }
         }

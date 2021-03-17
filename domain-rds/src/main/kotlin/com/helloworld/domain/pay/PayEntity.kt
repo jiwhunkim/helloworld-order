@@ -16,12 +16,11 @@ class PayEntity(
 
         @OneToOne(optional = false)
         @JoinColumn(name = "orderId", foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
-        var order: OrderEntity,
-
-        @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-        @JoinColumn(name = "payId", foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
-        var payLines: MutableList<PayLineEntity> = mutableListOf()
+        var order: OrderEntity
 ) {
+    @OneToMany(mappedBy = "pay", orphanRemoval = true, cascade = [CascadeType.ALL])
+    var payLines: MutableList<PayLineEntity> = mutableListOf()
+
     @Column
     lateinit var status: String
 
@@ -30,6 +29,11 @@ class PayEntity(
 
     @Column
     lateinit var canceledAt: ZonedDateTime
+
+    fun addPayLine(payLineEntity: PayLineEntity) {
+        payLineEntity.pay = this
+        payLines.add(payLineEntity)
+    }
 
     fun cancel() {
         this.status = "CANCEL"
