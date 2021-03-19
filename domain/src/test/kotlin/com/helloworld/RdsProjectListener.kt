@@ -5,7 +5,7 @@ import org.testcontainers.containers.MariaDBContainer
 import org.testcontainers.utility.DockerImageName
 
 object RdsProjectListener : ProjectListener {
-    val rdsContainer = MariaDBContainer<Nothing>(DockerImageName.parse("mariadb:latest")).apply {
+    val rdsContainer =  MariaDBContainer<Nothing>(DockerImageName.parse("mariadb:latest")).apply {
         withCreateContainerCmdModifier { cmd -> cmd.withName("rds-container") }
     }
 
