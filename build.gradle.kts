@@ -71,6 +71,8 @@ subprojects {
 		}
 
 		"testImplementation"("org.testcontainers:junit-jupiter")
+		"testImplementation"("org.testcontainers:mysql")
+		"testImplementation"("org.testcontainers:mariadb")
 		"testImplementation"("org.junit.jupiter:junit-jupiter-api")
 		"testImplementation"("org.junit.jupiter:junit-jupiter-params")
 		"testRuntimeOnly"("org.junit.jupiter:junit-jupiter-engine")
