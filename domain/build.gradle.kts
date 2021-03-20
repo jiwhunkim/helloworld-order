@@ -1,32 +1,33 @@
 plugins {
-	id("org.springframework.boot")
-	id("io.spring.dependency-management")
-	id("java")
-	kotlin("jvm")
-	kotlin("plugin.spring")
+    id("org.springframework.boot")
+    id("io.spring.dependency-management")
+    id("java")
+    kotlin("jvm")
+    kotlin("plugin.spring")
 
-	application
+    application
 }
 
 java.sourceCompatibility = JavaVersion.VERSION_11
 
 configurations {
-	compileOnly {
-		extendsFrom(configurations.annotationProcessor.get())
-	}
+    compileOnly {
+        extendsFrom(configurations.annotationProcessor.get())
+    }
 }
 
 dependencies {
-	implementation(project(":domain-redis")) {
-		exclude(group="org.springframework", module = "spring-tx")
-	}
-	implementation(project(":domain-rds")) {
-		exclude(group="org.springframework", module = "spring-tx")
-	}
+    implementation(project(":domain-redis")) {
+        exclude(group = "org.springframework", module = "spring-tx")
+    }
+    implementation(project(":domain-rds")) {
+        exclude(group = "org.springframework", module = "spring-tx")
+    }
 
-	implementation("org.springframework:spring-tx")
+    implementation("com.zaxxer:HikariCP")
+    implementation("org.springframework:spring-tx")
 
-	implementation("javax.persistence:javax.persistence-api")
+    implementation("javax.persistence:javax.persistence-api")
 }
 
 val jar: Jar by tasks

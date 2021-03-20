@@ -12,8 +12,8 @@
     - create (O)
     - detail (O)
     - update (O)
-    - pay (X)
-    - cancel (X)
+    - pay (O)
+    - cancel (O)
     
 ## Module 
 

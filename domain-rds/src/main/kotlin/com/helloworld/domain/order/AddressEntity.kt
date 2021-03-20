@@ -5,10 +5,10 @@ import javax.persistence.Embeddable
 
 @Embeddable
 class AddressEntity(
-        @Column(nullable = false)
-        var basic: String,
-        @Column(nullable = false)
-        var detail: String,
-        var zipCode: String? = null
+    @Column(nullable = false)
+    var basic: String,
+    @Column(nullable = false)
+    var detail: String,
+    var zipCode: String? = null
 ) {
 }

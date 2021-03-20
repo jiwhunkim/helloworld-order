@@ -1,6 +1,7 @@
 package com.helloworld.domain.pay.service
 
 import com.helloworld.DomainApplication
+import com.helloworld.config.DataSourceConfig
 import com.helloworld.domain.order.*
 import com.helloworld.domain.order.enum.DeliveryType
 import com.helloworld.domain.order.enum.OrderStatus
@@ -11,15 +12,15 @@ import io.kotest.matchers.nulls.shouldNotBeNull
 import io.mockk.every
 import io.mockk.mockk
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.annotation.Rollback
+import org.springframework.context.annotation.Import
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.transaction.annotation.Transactional
 import java.math.BigDecimal
 
 @SpringBootTest(classes = [DomainApplication::class])
 @ActiveProfiles(value = ["test"])
+@Import(DataSourceConfig::class)
 @Transactional
-@Rollback(value = false)
 class DomainCommandPayServiceSpec(
         val domainCommandOrderService: DomainCommandOrderService,
         val domainCommandPayService: DomainCommandPayService

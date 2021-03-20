@@ -11,7 +11,6 @@ import org.springframework.test.context.ActiveProfiles
 import java.math.BigDecimal
 import java.time.ZonedDateTime
 
-
 @DataRedisTest
 @Import(RedisConfig::class)
 @ActiveProfiles("test")

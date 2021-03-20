@@ -35,6 +35,10 @@ class PayEntity(
         payLines.add(payLineEntity)
     }
 
+    fun approve() {
+        this.approvedAt = ZonedDateTime.now()
+    }
+
     fun cancel() {
         this.status = "CANCEL"
         payLines.forEach { it.status = "CANCEL" }
