@@ -1,10 +1,12 @@
 package com.helloworld.domain.order
 
+import com.helloworld.domain.order.enum.DeliveryStatus
 import com.helloworld.domain.order.enum.OrderStatus
 import com.helloworld.domain.pay.PayEntity
 import org.hibernate.annotations.Fetch
 import org.hibernate.annotations.FetchMode
 import java.math.BigDecimal
+import java.time.ZonedDateTime
 import javax.persistence.*
 
 @Entity(name = "orders")
@@ -78,7 +80,12 @@ class OrderEntity(
     @Fetch(FetchMode.SUBSELECT)
     var payDiscounts: MutableList<OrderPayDiscountEntity> = mutableListOf(),
 
-) : BaseEntity() {
+    @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    @JoinColumn(name = "orderId", foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
+    @Fetch(FetchMode.SUBSELECT)
+    var orderStatusHistories: MutableList<OrderStatusHistory> = mutableListOf(),
+
+    ) : BaseEntity() {
     @OneToOne(mappedBy = "order")
     @JoinColumn(name = "orderId", foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
     lateinit var pay: PayEntity
@@ -107,17 +114,30 @@ class OrderEntity(
         payDiscounts.add(payDiscount)
     }
 
+    fun changeStatus(orderStatus: OrderStatus, deliveryStatus: DeliveryStatus) {
+        this.status = orderStatus
+        this.delivery.status = deliveryStatus
+
+        addHistory(OrderStatusHistory(
+            orderStatus = orderStatus,
+            deliveryStatus = deliveryStatus,
+            processedAt = ZonedDateTime.now()
+        ))
+    }
+
+    fun addHistory(orderStatusHistory: OrderStatusHistory) {
+        if (orderStatusHistories == null) {
+            orderStatusHistories = mutableListOf()
+        }
+        orderStatusHistories.add(orderStatusHistory)
+    }
+
     fun bindPay(pay: PayEntity) {
-        this.status = OrderStatus.OPEN
         this.pay = pay
     }
 
     fun ableCancel(): Boolean {
         return this.status == OrderStatus.OPEN
-    }
-
-    fun cancel() {
-        this.status = OrderStatus.CANCEL
     }
 
     private fun calculateAmount(): BigDecimal = lineItems.sumOf { it.getTotalAmount() }

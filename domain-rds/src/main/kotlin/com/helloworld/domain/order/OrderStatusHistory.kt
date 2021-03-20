@@ -2,6 +2,8 @@ package com.helloworld.domain.order
 
 import com.helloworld.domain.order.enum.DeliveryStatus
 import com.helloworld.domain.order.enum.OrderStatus
+import org.hibernate.annotations.CreationTimestamp
+import java.time.ZonedDateTime
 import javax.persistence.*
 
 @Entity(name = "order_status_histories")
@@ -16,9 +18,12 @@ class OrderStatusHistory(
 
     @Column(nullable = false, columnDefinition = "VARCHAR(20) NOT NULL")
     @Enumerated(EnumType.STRING)
-    var deliveryStatus: DeliveryStatus
+    var deliveryStatus: DeliveryStatus,
 
+    @CreationTimestamp
+    @Column(nullable = false, columnDefinition = "DATETIME(6) DEFAULT now(6)")
+    var processedAt: ZonedDateTime? = null
 
-) {
+) : BaseEntity() {
 
 }

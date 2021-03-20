@@ -25,10 +25,10 @@ abstract class BaseEntity(
     var modifiedAt: ZonedDateTime? = null
 ) {
     @CreatedBy
-    @Column(name = "created_by", nullable = false, columnDefinition="VARCHAR(64) NOT NULL DEFAULT ''")
+    @Column(name = "created_by", nullable = false, columnDefinition = "VARCHAR(64) NOT NULL DEFAULT ''")
     var createdBy: String? = null
 
     @LastModifiedBy
-    @Column(name = "modified_by", nullable = false, columnDefinition="VARCHAR(64) NOT NULL DEFAULT ''")
+    @Column(name = "modified_by", nullable = false, columnDefinition = "VARCHAR(64) NOT NULL DEFAULT ''")
     var modifiedBy: String? = null
 }

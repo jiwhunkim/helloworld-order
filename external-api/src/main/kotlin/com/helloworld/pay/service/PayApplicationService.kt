@@ -2,6 +2,8 @@ package com.helloworld.pay.service
 
 import com.helloworld.data.order.OrderDto
 import com.helloworld.data.order.mapper.OrderMapstructMapper
+import com.helloworld.domain.order.enum.DeliveryStatus
+import com.helloworld.domain.order.enum.OrderStatus
 import com.helloworld.domain.order.service.DomainCommandOrderService
 import com.helloworld.domain.order.service.DomainQueryOrderService
 import com.helloworld.domain.pay.PayLineEntity
@@ -12,10 +14,10 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class PayApplicationService(
-        val domainQueryOrderService: DomainQueryOrderService,
-        val domainCommandOrderService: DomainCommandOrderService,
-        val domainCommandPayService: DomainCommandPayService,
-        val orderMapstructMapper: OrderMapstructMapper
+    val domainQueryOrderService: DomainQueryOrderService,
+    val domainCommandOrderService: DomainCommandOrderService,
+    val domainCommandPayService: DomainCommandPayService,
+    val orderMapstructMapper: OrderMapstructMapper
 ) {
     @Transactional
     fun pay(orderId: Long, payRequestDto: PayRequestDto): OrderDto {
@@ -24,18 +26,19 @@ class PayApplicationService(
         val payLines = payRequestDto.payLines.map { PayLineEntity(method = it.method, amount = it.amount) }
         val pay = domainCommandPayService.pay(order, payLines)
         order.bindPay(pay)
+        order.changeStatus(OrderStatus.OPEN, DeliveryStatus.EMPTY)
         return orderMapstructMapper.map(order)
     }
 
     @Transactional
     fun cancel(orderId: Long): OrderDto {
         val order = domainQueryOrderService.findById(orderId)
-        if(!order.ableCancel()) {
+        if (!order.ableCancel()) {
             throw IllegalArgumentException("Order cannot canceled")
         }
 
         domainCommandPayService.cancel(order.pay)
-        order.cancel()
+        order.changeStatus(OrderStatus.CANCEL, order.delivery.status)
 
         return orderMapstructMapper.map(order)
     }
