@@ -78,3 +78,18 @@ subprojects {
 		"testRuntimeOnly"("org.junit.jupiter:junit-jupiter-engine")
 	}
 }
+
+var jpaProjects = listOf(
+	project(":domain-rds"),
+	project(":domain-mapper"),
+	project(":domain"),
+	project(":external-api")
+)
+
+configure(jpaProjects) {
+	dependencies {
+		"implementation"("org.springframework.boot:spring-boot-starter-data-jpa") {
+			exclude(module = "hibernate-core")
+		}
+	}
+}

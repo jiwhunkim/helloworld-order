@@ -2,7 +2,9 @@ package com.helloworld.domain.pay.service
 
 import com.helloworld.DomainApplication
 import com.helloworld.config.DataSourceConfig
+import com.helloworld.config.audit.AuditorAwareImpl
 import com.helloworld.domain.order.*
+import com.helloworld.domain.order.enum.DeliveryStatus
 import com.helloworld.domain.order.enum.DeliveryType
 import com.helloworld.domain.order.enum.OrderStatus
 import com.helloworld.domain.order.service.DomainCommandOrderService
@@ -19,7 +21,7 @@ import java.math.BigDecimal
 
 @SpringBootTest(classes = [DomainApplication::class])
 @ActiveProfiles(value = ["test"])
-@Import(DataSourceConfig::class)
+@Import(DataSourceConfig::class, AuditorAwareImpl::class)
 @Transactional
 class DomainCommandPayServiceSpec(
         val domainCommandOrderService: DomainCommandOrderService,
@@ -48,6 +50,7 @@ class DomainCommandPayServiceSpec(
             every { address } returns mockAddress
             every { location } returns mockLocation
             every { distance } returns 1000.0
+            every { status } returns DeliveryStatus.EMPTY
         }
 
         val order = mockk<OrderEntity>(relaxed = true) {

@@ -1,6 +1,7 @@
 package com.helloworld.domain.order
 
 import com.helloworld.config.DataSourceConfig
+import com.helloworld.config.audit.AuditorAwareImpl
 import com.helloworld.domain.order.enum.DeliveryType
 import com.helloworld.rds.config.RdsConfig
 import io.kotest.core.spec.style.DescribeSpec
@@ -15,7 +16,7 @@ import java.math.BigDecimal
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Import(RdsConfig::class, DataSourceConfig::class)
+@Import(RdsConfig::class, DataSourceConfig::class, AuditorAwareImpl::class)
 @ActiveProfiles("test")
 class OrderRepositorySpec(val orderRepository: OrderRepository) : DescribeSpec() {
 

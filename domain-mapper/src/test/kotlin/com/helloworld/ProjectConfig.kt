@@ -6,7 +6,11 @@ import io.kotest.spring.SpringAutowireConstructorExtension
 import io.kotest.spring.SpringListener
 
 class ProjectConfig : AbstractProjectConfig() {
-    override fun listeners() = listOf(SpringListener)
-    override fun extensions(): List<Extension> = listOf(SpringAutowireConstructorExtension)
+    override fun listeners() = listOf(
+        SpringListener,
+//        rdsContainer.perProject("rds-container"),
+//        RedisProjectListener.redisContainer.perProject("redis-container")
+    )
 
+    override fun extensions(): List<Extension> = listOf(SpringAutowireConstructorExtension)
 }
