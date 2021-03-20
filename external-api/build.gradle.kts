@@ -21,18 +21,6 @@ dependencies {
 	implementation(project(":domain-rds"))
 	implementation(project(":domain"))
 
-//	implementation(project(":domain")) {
-//		exclude(group="org.springframework", module = "spring-tx")
-//	}
-//	implementation(project(":domain-redis")) {
-//		exclude(group="org.springframework", module = "spring-tx")
-//	}
-//	implementation(project(":domain-rds")) {
-//		exclude(group="org.springframework", module = "spring-tx")
-//	}
-//
-//	implementation("org.springframework:spring-tx")
-
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-security")
 

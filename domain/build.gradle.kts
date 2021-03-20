@@ -19,17 +19,6 @@ configurations {
 dependencies {
     implementation(project(":domain-redis"))
     implementation(project(":domain-rds"))
-//    implementation(project(":domain-redis")) {
-//        exclude(group = "org.springframework", module = "spring-tx")
-//    }
-//    implementation(project(":domain-rds")) {
-//        exclude(group = "org.springframework", module = "spring-tx")
-//    }
-//
-//    implementation("com.zaxxer:HikariCP")
-//    implementation("org.springframework:spring-tx")
-
-    implementation("javax.persistence:javax.persistence-api")
 }
 
 val jar: Jar by tasks

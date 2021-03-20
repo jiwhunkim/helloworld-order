@@ -4,15 +4,11 @@ import com.helloworld.DomainApplication
 import com.helloworld.config.DataSourceConfig
 import com.helloworld.config.audit.AuditorAwareImpl
 import com.helloworld.domain.order.*
-import com.helloworld.domain.order.enum.DeliveryStatus
 import com.helloworld.domain.order.enum.DeliveryType
-import com.helloworld.domain.order.enum.OrderStatus
 import com.helloworld.domain.order.service.DomainCommandOrderService
 import com.helloworld.domain.pay.PayLineEntity
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.nulls.shouldNotBeNull
-import io.mockk.every
-import io.mockk.mockk
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Import
 import org.springframework.test.context.ActiveProfiles
@@ -24,67 +20,60 @@ import java.math.BigDecimal
 @Import(DataSourceConfig::class, AuditorAwareImpl::class)
 @Transactional
 class DomainCommandPayServiceSpec(
-        val domainCommandOrderService: DomainCommandOrderService,
-        val domainCommandPayService: DomainCommandPayService
+    val domainCommandOrderService: DomainCommandOrderService,
+    val domainCommandPayService: DomainCommandPayService
 ) : DescribeSpec() {
     init {
-        val mockShop = mockk<OrderShopEntity> {
-            every { id } returns 1L
-            every { shopNo } returns 1L
-            every { serviceType } returns "serviceType"
-            every { name } returns "name"
-        }
-
-        val mockAddress = mockk<AddressEntity> {
-            every { basic } returns "basic"
-            every { detail } returns "detail"
-        }
-
-        val mockLocation = mockk<GeoLocationEntity> {
-            every { latitude } returns 35.0
-            every { longitude } returns 35.0
-        }
-
-        val mockDelivery = mockk<DeliveryEntity>() {
-            every { type } returns DeliveryType.DELIVERY
-            every { address } returns mockAddress
-            every { location } returns mockLocation
-            every { distance } returns 1000.0
-            every { status } returns DeliveryStatus.EMPTY
-        }
-
-        val order = mockk<OrderEntity>(relaxed = true) {
-            every { id } returns 1L
-            every { deviceId } returns "deviceId"
-            every { accountId } returns 1L
-            every { cartId } returns "cartId"
-            every { orderUserContact } returns "orderUserContact"
-            every { orderUserNickname } returns "orderUserNickname"
-            every { status } returns OrderStatus.INITIALIZE
-            every { shop } returns mockShop
-            every { totalAmount } returns BigDecimal(1000)
-            every { billingAmount } returns BigDecimal(1000)
-            every { salesAmount } returns BigDecimal(1000)
-            every { discountAmount } returns BigDecimal.ZERO
-            every { amount } returns BigDecimal(1000)
-            every { delivery } returns mockDelivery
-        }
-
-        domainCommandOrderService.save(order)
-        val payLines = listOf(
-                PayLineEntity(amount = BigDecimal(1000), method = "CREDIT_CARD")
+        val shop = OrderShopEntity(
+            shopNo = 1L,
+            serviceType = "serviceType",
+            name = "name"
         )
-        val pay = domainCommandPayService.pay(order, payLines)
+        val delivery = DeliveryEntity(
+            type = DeliveryType.DELIVERY,
+            address = AddressEntity("basic", "detail", "zipCode"),
+            location = GeoLocationEntity(34.0, 34.0),
+            distance = 1000.0
+        )
+        val order = OrderEntity(
+            deviceId = "test",
+            accountId = 0L,
+            cartId = "cartId",
+            orderUserContact = "contact",
+            orderUserNickname = "nickname",
+            shop = shop,
+            amount = BigDecimal.ZERO,
+            salesAmount = BigDecimal.ZERO,
+            discountAmount = BigDecimal.ZERO,
+            totalAmount = BigDecimal.ZERO,
+            delivery = delivery,
+            lineItems = mutableListOf(),
+            cartDiscounts = mutableListOf()
+        )
+        order.billingAmount = BigDecimal(1000)
 
         describe(".pay") {
             it("order pay properly") {
+                domainCommandOrderService.save(order)
+                val payLines = listOf(
+                    PayLineEntity(amount = BigDecimal(1000), method = "CREDIT_CARD")
+                )
+                val pay = domainCommandPayService.pay(order, payLines)
+
                 pay.shouldNotBeNull()
             }
         }
 
         describe(".cancel") {
             it("cancel properly") {
+                domainCommandOrderService.save(order)
+                val payLines = listOf(
+                    PayLineEntity(amount = BigDecimal(1000), method = "CREDIT_CARD")
+                )
+                val pay = domainCommandPayService.pay(order, payLines)
+
                 val cancel = domainCommandPayService.cancel(pay)
+
                 cancel.canceledAt.shouldNotBeNull()
             }
         }

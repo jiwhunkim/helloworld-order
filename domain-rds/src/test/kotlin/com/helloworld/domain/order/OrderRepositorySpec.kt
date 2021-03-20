@@ -19,7 +19,6 @@ import java.math.BigDecimal
 @Import(RdsConfig::class, DataSourceConfig::class, AuditorAwareImpl::class)
 @ActiveProfiles("test")
 class OrderRepositorySpec(val orderRepository: OrderRepository) : DescribeSpec() {
-
     init {
         describe(".save") {
             val shop = OrderShopEntity(
@@ -97,8 +96,8 @@ class OrderRepositorySpec(val orderRepository: OrderRepository) : DescribeSpec()
                 lineItems = mutableListOf(),
                 cartDiscounts = mutableListOf()
             )
-            val result = orderRepository.save(order)
             it("find properly") {
+                val result = orderRepository.save(order)
                 val search = orderRepository.findById(result.id).get()
                 search.cartDiscounts
                 search.payDiscounts
