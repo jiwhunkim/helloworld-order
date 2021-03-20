@@ -86,6 +86,20 @@ class OrderEntity(
     var orderStatusHistories: MutableList<OrderStatusHistory> = mutableListOf(),
 
     ) : BaseEntity() {
+
+    @Column(columnDefinition = "DATETIME(6) DEFAULT now(6)")
+    var orderedAt: ZonedDateTime? = null
+
+    @Column(columnDefinition = "DATETIME(6) DEFAULT now(6)")
+    var acceptedAt: ZonedDateTime? = null
+
+    @Column(columnDefinition = "DATETIME(6) DEFAULT now(6)")
+    var completedAt: ZonedDateTime? = null
+
+    @Column(columnDefinition = "DATETIME(6) DEFAULT now(6)")
+    var canceledAt: ZonedDateTime? = null
+
+
     @OneToOne(mappedBy = "order")
     @JoinColumn(name = "orderId", foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
     lateinit var pay: PayEntity
@@ -118,11 +132,22 @@ class OrderEntity(
         this.status = orderStatus
         this.delivery.status = deliveryStatus
 
-        addHistory(OrderStatusHistory(
-            orderStatus = orderStatus,
-            deliveryStatus = deliveryStatus,
-            processedAt = ZonedDateTime.now()
-        ))
+        changeStatusAt(orderStatus)
+        addHistory(
+            OrderStatusHistory(
+                orderStatus = orderStatus,
+                deliveryStatus = deliveryStatus,
+                processedAt = ZonedDateTime.now()
+            )
+        )
+    }
+
+    fun changeStatusAt(orderStatus: OrderStatus) {
+        when (orderStatus) {
+            OrderStatus.OPEN -> this.orderedAt = ZonedDateTime.now()
+            OrderStatus.ACCEPT -> this.acceptedAt = ZonedDateTime.now()
+            OrderStatus.CANCEL -> this.canceledAt = ZonedDateTime.now()
+        }
     }
 
     fun addHistory(orderStatusHistory: OrderStatusHistory) {
