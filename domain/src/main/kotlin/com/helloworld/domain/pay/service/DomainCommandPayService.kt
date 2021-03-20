@@ -32,6 +32,7 @@ class DomainCommandPayService(
             pay.addPayLine(it)
         }
 
+        pay.approve()
         return commandPayService.save(pay)
     }
 
