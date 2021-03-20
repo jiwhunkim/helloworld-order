@@ -9,63 +9,76 @@ import javax.persistence.*
 
 @Entity(name = "orders")
 class OrderEntity(
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        var id: Long = 0,
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Long = 0,
 
-        @Column(nullable = false)
-        var deviceId: String,
+    @Column(nullable = false)
+    var deviceId: String,
 
-        @Column(nullable = false)
-        var accountId: Long,
+    @Column(nullable = false)
+    var accountId: Long,
 
-        @Column(nullable = false)
-        var cartId: String,
+    @Column(nullable = false)
+    var cartId: String,
 
-        @Column(nullable = false)
-        var orderUserContact: String,
+    @Column(nullable = false)
+    var orderUserContact: String,
 
-        @Column(nullable = false)
-        var orderUserNickname: String,
+    @Column(nullable = false)
+    var orderUserNickname: String,
 
-        @Column(nullable = false, columnDefinition = "VARCHAR(20) NOT NULL")
-        @Enumerated(EnumType.STRING)
-        var status: OrderStatus = OrderStatus.INITIALIZE,
+    @Column(nullable = false, columnDefinition = "VARCHAR(20) NOT NULL")
+    @Enumerated(EnumType.STRING)
+    var status: OrderStatus = OrderStatus.INITIALIZE,
 
-        @OneToOne(cascade = [CascadeType.ALL] /*fetch = FetchType.LAZY*/)
-        @JoinColumn(name = "orderShopId", nullable = false, insertable = true, updatable = false, foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
-        var shop: OrderShopEntity,
+    @OneToOne(cascade = [CascadeType.ALL] /*fetch = FetchType.LAZY*/)
+    @JoinColumn(
+        name = "orderShopId",
+        nullable = false,
+        insertable = true,
+        updatable = false,
+        foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT)
+    )
+    var shop: OrderShopEntity,
 
-        @Column(nullable = false)
-        var amount: BigDecimal = BigDecimal.ZERO,
-        @Column(nullable = false)
-        var salesAmount: BigDecimal = BigDecimal.ZERO,
-        @Column(nullable = false)
-        var discountAmount: BigDecimal = BigDecimal.ZERO,
-        @Column(nullable = false)
-        var totalAmount: BigDecimal = BigDecimal.ZERO,
-        @Column
-        var billingAmount: BigDecimal? = null,
+    @Column(nullable = false)
+    var amount: BigDecimal = BigDecimal.ZERO,
+    @Column(nullable = false)
+    var salesAmount: BigDecimal = BigDecimal.ZERO,
+    @Column(nullable = false)
+    var discountAmount: BigDecimal = BigDecimal.ZERO,
+    @Column(nullable = false)
+    var totalAmount: BigDecimal = BigDecimal.ZERO,
+    @Column
+    var billingAmount: BigDecimal? = null,
 
-        @OneToOne(cascade = [CascadeType.ALL] /*fetch = FetchType.LAZY*/)
-        @JoinColumn(name = "deliveryId", nullable = false, insertable = true, updatable = false, foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
-        var delivery: DeliveryEntity,
+    @OneToOne(cascade = [CascadeType.ALL] /*fetch = FetchType.LAZY*/)
+    @JoinColumn(
+        name = "deliveryId",
+        nullable = false,
+        insertable = true,
+        updatable = false,
+        foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT)
+    )
+    var delivery: DeliveryEntity,
 
-        @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-        @Fetch(FetchMode.SUBSELECT)
-        @JoinColumn(name = "orderId", foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
-        var lineItems: MutableList<LineItemEntity> = mutableListOf(),
+    @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    @Fetch(FetchMode.SUBSELECT)
+    @JoinColumn(name = "orderId", foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
+    var lineItems: MutableList<LineItemEntity> = mutableListOf(),
 
-        @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-        @JoinColumn(name = "orderId", foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
-        @Fetch(FetchMode.SUBSELECT)
-        var cartDiscounts: MutableList<OrderCartDiscountEntity> = mutableListOf(),
+    @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    @JoinColumn(name = "orderId", foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
+    @Fetch(FetchMode.SUBSELECT)
+    var cartDiscounts: MutableList<OrderCartDiscountEntity> = mutableListOf(),
 
-        @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-        @JoinColumn(name = "orderId", foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
-        @Fetch(FetchMode.SUBSELECT)
-        var payDiscounts: MutableList<OrderPayDiscountEntity> = mutableListOf()
-) {
+    @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    @JoinColumn(name = "orderId", foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
+    @Fetch(FetchMode.SUBSELECT)
+    var payDiscounts: MutableList<OrderPayDiscountEntity> = mutableListOf(),
+
+) : BaseEntity() {
     @OneToOne(mappedBy = "order")
     @JoinColumn(name = "orderId", foreignKey = ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
     lateinit var pay: PayEntity
