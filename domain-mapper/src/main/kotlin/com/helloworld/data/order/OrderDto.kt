@@ -23,4 +23,5 @@ data class OrderDto(
     val lineItems: MutableList<LineItemDto> = mutableListOf()
     val cartDiscounts: MutableList<OrderCartDiscountDto> = mutableListOf()
     val payDiscounts: MutableList<OrderPayDiscountDto> = mutableListOf()
+    val orderStatusHistories: MutableList<OrderStatusHistoryDto> = mutableListOf()
 }

@@ -128,19 +128,19 @@ class OrderEntity(
         payDiscounts.add(payDiscount)
     }
 
-    fun changeStatus(orderStatus: OrderStatus, deliveryStatus: DeliveryStatus) {
-        this.status = orderStatus
-        this.delivery.status = deliveryStatus
-
-        changeStatusAt(orderStatus)
-        addHistory(
-            OrderStatusHistory(
-                orderStatus = orderStatus,
-                deliveryStatus = deliveryStatus,
-                processedAt = ZonedDateTime.now()
-            )
-        )
-    }
+//    fun changeStatus(orderStatus: OrderStatus, deliveryStatus: DeliveryStatus) {
+//        this.status = orderStatus
+//        this.delivery.status = deliveryStatus
+//
+//        changeStatusAt(orderStatus)
+//        addHistory(
+//            OrderStatusHistory(
+//                orderStatus = orderStatus,
+//                deliveryStatus = deliveryStatus,
+//                processedAt = ZonedDateTime.now()
+//            )
+//        )
+//    }
 
     fun changeStatusAt(orderStatus: OrderStatus) {
         when (orderStatus) {
@@ -161,8 +161,49 @@ class OrderEntity(
         this.pay = pay
     }
 
+    fun ableOpen(): Boolean {
+        return this.status == OrderStatus.INITIALIZE
+    }
+
     fun ableCancel(): Boolean {
         return this.status == OrderStatus.OPEN
+    }
+
+    fun ableAccept(): Boolean {
+        return this.status == OrderStatus.OPEN
+    }
+
+    fun open() {
+        this.orderedAt = ZonedDateTime.now()
+        this.status = OrderStatus.OPEN
+        addHistory(
+            OrderStatusHistory(
+                orderStatus = OrderStatus.OPEN,
+                deliveryStatus = DeliveryStatus.EMPTY,
+                processedAt = orderedAt!!)
+        )
+    }
+
+    fun accept() {
+        this.acceptedAt = ZonedDateTime.now()
+        this.status = OrderStatus.ACCEPT
+        addHistory(
+            OrderStatusHistory(
+                orderStatus = OrderStatus.ACCEPT,
+                deliveryStatus = this.delivery.status,
+                processedAt = acceptedAt!!)
+        )
+    }
+
+    fun cancel() {
+        this.canceledAt = ZonedDateTime.now()
+        this.status = OrderStatus.CANCEL
+        addHistory(
+            OrderStatusHistory(
+                orderStatus = OrderStatus.CANCEL,
+                deliveryStatus = this.delivery.status,
+                processedAt = canceledAt!!)
+        )
     }
 
     private fun calculateAmount(): BigDecimal = lineItems.sumOf { it.getTotalAmount() }
