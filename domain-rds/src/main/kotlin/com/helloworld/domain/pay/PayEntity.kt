@@ -36,6 +36,7 @@ class PayEntity(
     }
 
     fun approve() {
+        this.status = "SUCCEEDED"
         this.approvedAt = ZonedDateTime.now()
     }
 

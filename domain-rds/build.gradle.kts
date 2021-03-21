@@ -18,9 +18,6 @@ configurations {
 }
 
 dependencies {
-	implementation("org.springframework.boot:spring-boot-starter-data-jpa") {
-		exclude(module = "hibernate-core")
-	}
 	implementation("org.hibernate:hibernate-core")
 	runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
 

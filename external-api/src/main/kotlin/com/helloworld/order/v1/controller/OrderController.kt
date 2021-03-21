@@ -4,8 +4,8 @@ import com.helloworld.common.response.Response
 import com.helloworld.config.HelloworldUser
 import com.helloworld.data.order.OrderDto
 import com.helloworld.domain.common.data.User
+import com.helloworld.domain.order.service.OrderApplicationService
 import com.helloworld.order.data.OrderUpdateRequestDto
-import com.helloworld.order.service.OrderApplicationService
 import com.helloworld.pay.service.PayApplicationService
 import com.helloworld.pay.service.data.PayRequestDto
 import org.springframework.web.bind.annotation.*
@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.*
         produces = ["application/vnd.helloworld.api.v1+json; charset=UTF-8"]
 )
 class OrderController(
-        private val orderApplicationService: OrderApplicationService,
-        private val payApplicationService: PayApplicationService
+    private val orderApplicationService: OrderApplicationService,
+    private val payApplicationService: PayApplicationService
 ) {
 
     @GetMapping(path = ["/{id}"])

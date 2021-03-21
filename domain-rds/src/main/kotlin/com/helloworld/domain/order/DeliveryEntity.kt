@@ -21,6 +21,6 @@ class DeliveryEntity(
 
     @Column(nullable = false, columnDefinition = "VARCHAR(20) NOT NULL")
     @Enumerated(EnumType.STRING)
-    var status: DeliveryStatus = DeliveryStatus.EMPTY,
+    var status: DeliveryStatus = DeliveryStatus.EMPTY
 ) : BaseEntity() {
 }

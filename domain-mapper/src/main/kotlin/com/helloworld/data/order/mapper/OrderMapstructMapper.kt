@@ -12,7 +12,8 @@ import org.mapstruct.*
             DeliveryMapstructMapper::class,
             OrderLineItemMapstructMapper::class,
             OrderCartDiscountMapstructMapper::class,
-            OrderPayDiscountMapstructMapper::class
+            OrderPayDiscountMapstructMapper::class,
+            OrderStatusHistoryMapper::class
         ],
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
         nullValueMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT,

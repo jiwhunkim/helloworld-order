@@ -1,19 +1,36 @@
 package com.helloworld
 
+import com.helloworld.domain.order.OrderRepository
+import com.helloworld.domain.pay.PayRepository
+import com.ninjasquad.springmockk.MockkBean
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.context.annotation.Profile
-import org.springframework.context.annotation.PropertySource
-import org.springframework.context.annotation.PropertySources
+import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext
 import org.springframework.test.context.ActiveProfiles
-import org.springframework.test.context.TestPropertySource
+import javax.persistence.EntityManager
+import javax.persistence.EntityManagerFactory
+
 
 @SpringBootTest(classes = [ExternalApplication::class])
 @ActiveProfiles("test")
 class ExternalApplicationTests {
+    @MockkBean
+    var orderRepository: OrderRepository? = null
 
-	@Test
-	fun contextLoads() {
-	}
+    @MockkBean
+    var payRepository: PayRepository? = null
 
+    @MockkBean
+    var entityManager: EntityManager? = null
+
+    @MockkBean
+    var entityManagerFactory: EntityManagerFactory? = null
+
+    @MockBean
+    var jpaMetamodelMappingContext: JpaMetamodelMappingContext? = null
+
+    @Test
+    fun contextLoads() {
+    }
 }
