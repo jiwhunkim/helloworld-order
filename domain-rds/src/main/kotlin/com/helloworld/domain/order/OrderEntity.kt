@@ -128,28 +128,6 @@ class OrderEntity(
         payDiscounts.add(payDiscount)
     }
 
-//    fun changeStatus(orderStatus: OrderStatus, deliveryStatus: DeliveryStatus) {
-//        this.status = orderStatus
-//        this.delivery.status = deliveryStatus
-//
-//        changeStatusAt(orderStatus)
-//        addHistory(
-//            OrderStatusHistory(
-//                orderStatus = orderStatus,
-//                deliveryStatus = deliveryStatus,
-//                processedAt = ZonedDateTime.now()
-//            )
-//        )
-//    }
-
-    fun changeStatusAt(orderStatus: OrderStatus) {
-        when (orderStatus) {
-            OrderStatus.OPEN -> this.orderedAt = ZonedDateTime.now()
-            OrderStatus.ACCEPT -> this.acceptedAt = ZonedDateTime.now()
-            OrderStatus.CANCEL -> this.canceledAt = ZonedDateTime.now()
-        }
-    }
-
     fun addHistory(orderStatusHistory: OrderStatusHistory) {
         if (orderStatusHistories == null) {
             orderStatusHistories = mutableListOf()
