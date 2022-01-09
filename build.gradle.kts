@@ -136,6 +136,8 @@ configure(springProjects) {
     apply(plugin = "io.spring.dependency-management")
 
     dependencies {
+        implementation("org.springframework.boot:spring-boot-starter")
+
         implementation(Libs.jacksonModuleKotlin)
         kapt(Libs.SpringBoot.configurationProcessor)
         testImplementation(Libs.SpringBoot.starterTest) {
