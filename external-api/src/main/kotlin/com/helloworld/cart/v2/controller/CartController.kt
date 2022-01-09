@@ -1,7 +1,7 @@
 package com.helloworld.cart.v2.controller
 
 import com.helloworld.cart.service.CartApplicationService
-import com.helloworld.data.cart.CartDto
+import com.helloworld.domain.cart.dto.CartDto
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestHeader

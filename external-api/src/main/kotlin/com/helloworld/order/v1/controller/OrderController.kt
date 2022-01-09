@@ -2,8 +2,8 @@ package com.helloworld.order.v1.controller
 
 import com.helloworld.common.response.Response
 import com.helloworld.config.HelloworldUser
-import com.helloworld.data.order.OrderDto
 import com.helloworld.domain.common.data.User
+import com.helloworld.domain.order.dto.OrderDto
 import com.helloworld.domain.order.service.OrderApplicationService
 import com.helloworld.order.data.OrderUpdateRequestDto
 import com.helloworld.pay.service.PayApplicationService

@@ -5,7 +5,6 @@ import com.helloworld.domain.pay.PayRepository
 import com.ninjasquad.springmockk.MockkBean
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext
 import org.springframework.test.context.ActiveProfiles
 import javax.persistence.EntityManager
@@ -27,7 +26,7 @@ class ExternalApplicationTests {
     @MockkBean
     var entityManagerFactory: EntityManagerFactory? = null
 
-    @MockBean
+    @MockkBean
     var jpaMetamodelMappingContext: JpaMetamodelMappingContext? = null
 
     @Test

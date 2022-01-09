@@ -5,12 +5,11 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
-import org.springframework.security.config.http.SessionCreationPolicy
 
 @EnableWebSecurity
 class SecurityConfiguration : WebSecurityConfigurerAdapter() {
     override fun configure(web: WebSecurity?) {
-        web!!.ignoring().antMatchers("/v2/api-docs", "/v3/api-docs", "/swagger-resources/**", "/swagger-ui/**")
+//        web!!.ignoring().antMatchers("/v2/api-docs", "/v3/api-docs", "/swagger-resources/**", "/swagger-ui/**")
         super.configure(web)
     }
 
@@ -23,15 +22,16 @@ class SecurityConfiguration : WebSecurityConfigurerAdapter() {
                 ?: run { authentication.isAuthenticated = false }
             authentication
         }
-        http!!.authorizeRequests()
-            .and()
-            .antMatcher("/**")
-            .csrf().disable()
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and()
-            .addFilter(authenticatedAccountFilter)
-            .authorizeRequests()
-            .anyRequest()
-            .authenticated()
+        http!!.authorizeRequests().and().antMatcher("/**").authorizeRequests().anyRequest().permitAll()
+//        http!!.authorizeRequests()
+//            .and()
+//            .antMatcher("/**")
+//            .csrf().disable()
+//            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//            .and()
+//            .addFilter(authenticatedAccountFilter)
+//            .authorizeRequests()
+//            .anyRequest()
+//            .authenticated()
     }
 }

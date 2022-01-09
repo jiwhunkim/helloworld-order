@@ -5,7 +5,7 @@ import com.helloworld.cart.data.CartOrderOpenRequestDto
 import com.helloworld.cart.service.CartApplicationService
 import com.helloworld.common.response.Response
 import com.helloworld.config.HelloworldUser
-import com.helloworld.data.cart.CartDto
+import com.helloworld.domain.cart.dto.CartDto
 import com.helloworld.domain.common.data.User
 import com.helloworld.domain.order.service.OrderApplicationService
 import org.springframework.http.ResponseEntity

@@ -1,19 +1,4 @@
 plugins {
-	id("org.springframework.boot")
-	id("io.spring.dependency-management")
-	id("java")
-	kotlin("jvm")
-	kotlin("plugin.spring")
-
-	application
-}
-
-java.sourceCompatibility = JavaVersion.VERSION_11
-
-configurations {
-	compileOnly {
-		extendsFrom(configurations.annotationProcessor.get())
-	}
 }
 
 dependencies {

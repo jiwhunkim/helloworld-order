@@ -1,27 +1,14 @@
 plugins {
-	id("org.springframework.boot")
-	id("io.spring.dependency-management")
-	id("java")
-	kotlin("jvm")
-	kotlin("plugin.spring")
 	kotlin("plugin.jpa")
-
-	application
-}
-
-java.sourceCompatibility = JavaVersion.VERSION_11
-
-configurations {
-	compileOnly {
-		extendsFrom(configurations.annotationProcessor.get())
-	}
 }
 
 dependencies {
-	implementation("org.hibernate:hibernate-core")
 	runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
 
-	implementation("com.querydsl:querydsl-jpa")
+	implementation("javax.annotation:javax.annotation-api:1.3.2")
+	kapt("jakarta.persistence:jakarta.persistence-api")
+	kapt("javax.annotation:javax.annotation-api:1.3.2")
+
 	kapt(group = "com.querydsl", name = "querydsl-apt", classifier = "jpa")
 }
 
