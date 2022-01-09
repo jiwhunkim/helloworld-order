@@ -2,6 +2,8 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm") version Libs.Versions.kotlin apply true
+    kotlin("kapt") version Libs.Versions.kotlin apply true
+    kotlin("plugin.lombok") version "1.6.10" apply true
 
     id("org.jlleitschuh.gradle.ktlint") version Libs.Versions.ktlint
     id("org.jlleitschuh.gradle.ktlint-idea") version Libs.Versions.ktlint
@@ -9,12 +11,13 @@ plugins {
     kotlin("plugin.spring") version Libs.Versions.kotlin apply false
     kotlin("plugin.jpa") version Libs.Versions.kotlin apply false
 
-    kotlin("kapt") version Libs.Versions.kotlin apply true
-    kotlin("plugin.lombok") version "1.6.10" apply true
     id("io.freefair.lombok") version "5.3.0" apply false
 
     id("org.springframework.boot") version Libs.Versions.springBoot apply false
     id("io.spring.dependency-management") version Libs.Versions.springDependencyManagement apply false
+
+    id("org.sonarqube") version Libs.Versions.sonarqube
+    jacoco
 }
 
 buildscript {
@@ -48,6 +51,7 @@ subprojects {
     apply(plugin = "java")
     apply(plugin = "kotlin-kapt")
     apply(plugin = "kotlin-lombok")
+    apply(plugin = "jacoco")
 
     kapt {
         keepJavacAnnotationProcessors = true
@@ -58,12 +62,53 @@ subprojects {
     }
 
     dependencies {
-        "implementation"("org.jetbrains.kotlin:kotlin-reflect")
-        "implementation"("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+        implementation("org.jetbrains.kotlin:kotlin-reflect")
+        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    }
+
+    configurations {
+        compileOnly {
+            extendsFrom(configurations.annotationProcessor.get())
+        }
     }
 
     tasks.check {
         dependsOn(":ktlintCheck")
+    }
+
+    sonarqube {
+        properties {
+            property(
+                "sonar.coverage.jacoco.xmlReportPaths",
+                "${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml"
+            )
+        }
+    }
+
+    configure<JacocoPluginExtension> {
+        toolVersion = Libs.Versions.jacoco
+    }
+
+    tasks.withType<JacocoReport> {
+        reports {
+            html.isEnabled = true
+            xml.isEnabled = true
+            csv.isEnabled = false
+        }
+    }
+
+    tasks.withType<JacocoCoverageVerification> {
+        violationRules {
+            rule {
+                element = "BUNDLE"
+
+                limit {
+                    counter = "BRANCH"
+                    value = "COVEREDRATIO"
+                    minimum = "0.0".toBigDecimal()
+                }
+            }
+        }
     }
 }
 var springProjects = subprojects
@@ -82,6 +127,7 @@ var testcontainerProjects = listOf(
 )
 
 var kotestProjects = testcontainerProjects
+var intTestProjects = testcontainerProjects
 
 configure(springProjects) {
     apply(plugin = "org.jetbrains.kotlin.jvm")
@@ -90,13 +136,12 @@ configure(springProjects) {
     apply(plugin = "io.spring.dependency-management")
 
     dependencies {
-        "annotationProcessor"("org.springframework.boot:spring-boot-configuration-processor")
-        "kapt"("org.springframework.boot:spring-boot-configuration-processor")
-        "implementation"("org.springframework.boot:spring-boot-starter")
-        "implementation"("com.fasterxml.jackson.module:jackson-module-kotlin")
+        annotationProcessor(Libs.SpringBoot.configurationProcessor)
+        kapt(Libs.SpringBoot.configurationProcessor)
+        implementation(Libs.jacksonModuleKotlin)
 
         "developmentOnly"("org.springframework.boot:spring-boot-devtools")
-        "testImplementation"("org.springframework.boot:spring-boot-starter-test") {
+        testImplementation(Libs.SpringBoot.starterTest) {
             exclude(module = "mockito-core")
         }
 
@@ -109,7 +154,7 @@ configure(springProjects) {
 
 configure(jpaProjects) {
     dependencies {
-        "implementation"("org.springframework.boot:spring-boot-starter-data-jpa") {
+        "implementation"(Libs.SpringBoot.starterDataJpa) {
             exclude(module = "hibernate-core")
         }
         implementation("org.hibernate:hibernate-core")
@@ -144,5 +189,57 @@ configure(kotestProjects) {
 
         "testImplementation"("io.mockk:mockk")
         "testImplementation"("com.ninja-squad:springmockk:3.0.1")
+    }
+}
+
+configure(intTestProjects) {
+    apply(plugin = "jacoco")
+
+    sourceSets {
+        create("intTest") {
+            compileClasspath += sourceSets.main.get().output + sourceSets.test.get().output
+            runtimeClasspath += sourceSets.main.get().output + sourceSets.test.get().output
+
+            resources.srcDir(file("src/intTest/resources"))
+        }
+    }
+
+    val intTestImplementation: Configuration by configurations.getting {
+        extendsFrom(configurations.implementation.get(), configurations.testImplementation.get())
+    }
+
+    configurations["intTestImplementation"].extendsFrom(configurations.testImplementation.get())
+    configurations["intTestRuntimeOnly"].extendsFrom(configurations.runtimeOnly.get())
+
+    val intTest = task<Test>("intTest") {
+        description = "Runs integration tests."
+        group = "verification"
+
+        testClassesDirs = sourceSets["intTest"].output.classesDirs
+        classpath = sourceSets["intTest"].runtimeClasspath
+        shouldRunAfter("test")
+    }
+
+    tasks.check { dependsOn(intTest) }
+
+    tasks.jacocoTestReport {
+        var qDomains = ('A'..'Z').map { "**/Q$it*" }
+
+        classDirectories.setFrom(
+            files(
+                classDirectories.files.map {
+                    fileTree(it) {
+                        exclude(
+                            qDomains
+                        )
+                    }
+                }
+            )
+        )
+        executionData.setFrom(fileTree(buildDir).include("/jacoco/*.exec"))
+        shouldRunAfter(
+            tasks.test,
+            tasks.findByName("intTest")
+        ) // tests are required to run before generating the report
     }
 }
