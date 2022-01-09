@@ -5,16 +5,16 @@ plugins {
     kotlin("kapt") version Libs.Versions.kotlin apply true
     kotlin("plugin.lombok") version "1.6.10" apply true
 
+    kotlin("plugin.spring") version Libs.Versions.kotlin apply false
+    id("org.springframework.boot") version Libs.Versions.springBoot apply false
+    id("io.spring.dependency-management") version Libs.Versions.springDependencyManagement apply false
+
     id("org.jlleitschuh.gradle.ktlint") version Libs.Versions.ktlint
     id("org.jlleitschuh.gradle.ktlint-idea") version Libs.Versions.ktlint
 
-    kotlin("plugin.spring") version Libs.Versions.kotlin apply false
     kotlin("plugin.jpa") version Libs.Versions.kotlin apply false
-
     id("io.freefair.lombok") version "5.3.0" apply false
 
-    id("org.springframework.boot") version Libs.Versions.springBoot apply false
-    id("io.spring.dependency-management") version Libs.Versions.springDependencyManagement apply false
 
     id("org.sonarqube") version Libs.Versions.sonarqube
     jacoco
@@ -136,14 +136,14 @@ configure(springProjects) {
     apply(plugin = "io.spring.dependency-management")
 
     dependencies {
-        annotationProcessor(Libs.SpringBoot.configurationProcessor)
-        kapt(Libs.SpringBoot.configurationProcessor)
         implementation(Libs.jacksonModuleKotlin)
-
-        "developmentOnly"("org.springframework.boot:spring-boot-devtools")
+        kapt(Libs.SpringBoot.configurationProcessor)
         testImplementation(Libs.SpringBoot.starterTest) {
             exclude(module = "mockito-core")
         }
+        implementation(Libs.jacksonModuleKotlin)
+
+        "developmentOnly"("org.springframework.boot:spring-boot-devtools")
 
         implementation("org.projectlombok:lombok:1.18.22")
         annotationProcessor("org.projectlombok:lombok:1.18.22")
