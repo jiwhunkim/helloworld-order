@@ -17,79 +17,11 @@ allprojects {
 	tasks.withType<KotlinCompile> {
 		kotlinOptions {
 			freeCompilerArgs = listOf("-Xjsr305=strict")
-			jvmTarget = "11"
+			jvmTarget = "21"
 		}
 	}
 
 	tasks.withType<Test> {
 		useJUnitPlatform()
-	}
-}
-subprojects {
-	repositories {
-		mavenCentral()
-		maven("https://kotlin.bintray.com/kotlinx/")
-	}
-
-	apply {
-		plugin("io.spring.dependency-management")
-		plugin("org.springframework.boot")
-		plugin("kotlin")
-		plugin("kotlin-kapt")
-		plugin("java")
-	}
-
-	the<io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension>().apply {
-		imports {
-			mavenBom("org.springframework.cloud:spring-cloud-dependencies:Hoxton.SR8")
-			mavenBom("org.testcontainers:testcontainers-bom:1.15.2")
-		}
-	}
-
-	dependencies {
-		"implementation"("com.fasterxml.jackson.module:jackson-module-kotlin")
-		"implementation"("org.jetbrains.kotlin:kotlin-reflect")
-		"implementation"("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-		"implementation"("org.jetbrains.kotlinx:kotlinx-collections-immutable-jvm:0.3.3")
-		"developmentOnly"("org.springframework.boot:spring-boot-devtools")
-//		"annotationProcessor"("org.springframework.boot:spring-boot-configuration-processor")
-		"kapt"("org.springframework.boot:spring-boot-configuration-processor")
-
-		"implementation"("org.springframework.boot:spring-boot-starter")
-
-		"testImplementation"("io.kotest:kotest-runner-junit5:4.4.3") // for kotest framework
-		"testImplementation"("io.kotest:kotest-assertions-core:4.4.3") // for kotest core jvm assertions
-		"testImplementation"("io.kotest:kotest-property:4.4.3") // for kotest property test
-		"testImplementation"("io.kotest:kotest-extensions-spring:4.4.3")
-		"testImplementation"("io.kotest:kotest-extensions-testcontainers:4.4.3")
-
-		"testImplementation"("io.mockk:mockk")
-		"testImplementation"("com.ninja-squad:springmockk:3.0.1")
-
-		"testImplementation"("org.springframework.boot:spring-boot-starter-test") {
-//			exclude(module = "mockito-core")
-		}
-
-		"testImplementation"("org.testcontainers:junit-jupiter")
-		"testImplementation"("org.testcontainers:mysql")
-		"testImplementation"("org.testcontainers:mariadb")
-		"testImplementation"("org.junit.jupiter:junit-jupiter-api")
-		"testImplementation"("org.junit.jupiter:junit-jupiter-params")
-		"testRuntimeOnly"("org.junit.jupiter:junit-jupiter-engine")
-	}
-}
-
-var jpaProjects = listOf(
-	project(":domain-rds"),
-	project(":domain-mapper"),
-	project(":domain"),
-	project(":external-api")
-)
-
-configure(jpaProjects) {
-	dependencies {
-		"implementation"("org.springframework.boot:spring-boot-starter-data-jpa") {
-			exclude(module = "hibernate-core")
-		}
 	}
 }
