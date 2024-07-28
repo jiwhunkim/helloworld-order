@@ -1,13 +1,12 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-	id("org.springframework.boot") version "2.4.4" apply false
-	id("io.spring.dependency-management") version "1.0.11.RELEASE" apply false
-	kotlin("jvm") version "1.4.30" apply false
-	kotlin("plugin.spring") version "1.4.30" apply false
-	kotlin("plugin.jpa") version "1.4.30" apply false
-	kotlin("kapt") version "1.4.30" apply false
+	kotlin("jvm") version "1.9.23"
+}
 
+repositories {
+	gradlePluginPortal()
+	mavenCentral()
 }
 
 allprojects {
@@ -23,5 +22,14 @@ allprojects {
 
 	tasks.withType<Test> {
 		useJUnitPlatform()
+	}
+}
+
+subprojects {
+	apply(plugin = "java")
+
+	dependencies {
+		testImplementation(platform("org.junit:junit-bom:5.10.3"))
+		testImplementation("org.junit.jupiter:junit-jupiter")
 	}
 }
