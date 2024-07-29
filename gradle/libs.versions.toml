@@ -16,7 +16,7 @@ spring-boot = "3.3.1"
 spring-dependency-management = "1.1.4"
 spring-cloud = "2023.0.2"
 jakarta-annotation-api = "3.0.0"
-flywaydb = "10.11.0"
+flywaydb = "10.16.0"
 springdoc-openapi = "2.5.0"
 restdocs-api-spec = '0.19.2'
 restdoc-api-spec-gradle-plugin = "0.19.2"
@@ -45,7 +45,7 @@ spring-cloud-bom = { group = "org.springframework.cloud", name = "spring-cloud-d
 spring-cloud-starter-openfeign = { group = "org.springframework.cloud", name = "spring-cloud-starter-openfeign" }
 springdoc-openapi-starter-webmvc-ui = { group = "org.springdoc", name = "springdoc-openapi-starter-webmvc-ui", version.ref = "springdoc-openapi" }
 testcontainers = { module = "org.testcontainers:testcontainers-bom", version.ref = "testcontainers" }
-testcontainers-mariadb = { module = "org.testcontainers:mariadb", version.ref = "testcontainers" }
+testcontainers-mysql = { module = "org.testcontainers:mysql", version.ref = "testcontainers" }
 snakeyaml = { module = "org.yaml:snakeyaml", version.ref = "snakeyaml" }
 kotlin-logging-jvm = { module = "io.github.oshai:kotlin-logging-jvm", version.ref = "kotlin-logging-jvm" }
 kotest-runner-junit5 = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest" }
