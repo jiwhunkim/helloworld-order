@@ -1,0 +1,44 @@
+# https://github.com/editorconfig/editorconfig/wiki/EditorConfig-Properties
+# https://www.jetbrains.com/help/rider/EditorConfig_Index.html
+
+root = true
+
+[*]
+indent_style = space
+indent_size = 2
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+[*.{java,kt,kts,scala,rs,xml,kt.spec,kts.spec}]
+indent_size = 4
+
+[*.{kt,kts}]
+max_line_length = 200
+ktlint_code_style = ktlint_official
+ktlint_ignore_back_ticked_identifier = true
+ktlint_standard = enabled
+ktlint_experimental = enabled
+ktlint_standard_import-ordering = disabled
+ktlint_standard_no-wildcard-imports = disabled
+ktlint_standard_trailing-comma-on-declaration-site = disabled
+ktlint_standard_trailing-comma-on-call-site = disabled
+
+# Don't allow any wildcard imports
+ij_kotlin_packages_to_use_import_on_demand = unset
+
+[*.kts]
+ktlint_standard_max-line-length = disabled
+ktlint_standard_chain-method-continuation = disabled
+ktlint_standard_argument-list-wrapping = disabled
+
+[**/{test,intTest}/**.{kt,kts}]
+ktlint_standard_max-line-length = disabled
+
+[*.{bat,cmd}]
+end_of_line = crlf
+
+[*.{java,kt}]
+ij_kotlin_name_count_to_use_star_import = 999
+ij_kotlin_name_count_to_use_star_import_for_members = 999
