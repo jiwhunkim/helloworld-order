@@ -1,11 +1,12 @@
 package com.helloworld.order
 
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Test
+import io.kotest.core.spec.style.DescribeSpec
+import io.kotest.matchers.shouldBe
 
-class HelloworldSpec {
-    @Test
-    fun test() {
-        assertEquals("1", "1")
+class HelloworldSpec : DescribeSpec() {
+    init {
+        it("test") {
+            "1".shouldBe("1")
+        }
     }
 }
