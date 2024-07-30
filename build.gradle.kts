@@ -50,11 +50,11 @@ sonarqube {
     properties {
         property("sonar.host.url", System.getenv()["SONAR_HOST_URL"] ?: "http://localhost:9000")
         property("sonar.sourceEncoding", "UTF-8")
-        property("sonar.exclusions", "**/*Test*.*, **/*Mapper*.*, **/Q*.java, **/*Repository.kt, **/*Interceptor.kt, **entity/*, **/*Entity.*, **/*Constants.*, **/*Config.*, **Application.kt, **/*Request*.*, **/*Response*.*")
+        property("sonar.exclusions", "**/*Test*.*, **/Q*.java, **/*Config.*, **Application.kt")
         property("sonar.cpd.exclusions", "**/*Config.kt,**/*Configuration.kt")
         property("sonar.tests", "src/intTest/kotlin,src/test/kotlin")
         property("sonar.test.inclusions", "**/*Test.kt,**/*Spec.kt,**/*TestConfig.kt")
-        property("sonar.coverage.exclusions", "**/*Test*.*, **/*Mapper*.*, **/Q*.java, **/*Repository.kt, **/*Interceptor.kt, **entity/*,**/*Entity.*, **/*Constants.*, **/*Config.*, **Application.kt, **/*Request*.*, **/*Response*.*")
+        property("sonar.coverage.exclusions", "**/*Test*.*, **/Q*.java, **/*Config.*, **Application.kt")
         property("sonar.qualitygate.wait", "true")
         property("sonar.projectKey", "helloworld-order")
         property("sonar.coverage.jacoco.xmlReportPaths", "${getLayout().getBuildDirectory().get().asFile}/reports/kover/report.xml")
@@ -63,6 +63,7 @@ sonarqube {
 
 dependencies {
     kover(project(":domain"))
+    kover(project(":data:rds"))
 }
 
 kover {
@@ -71,21 +72,7 @@ kover {
             // exclusions for reports
             excludes {
                 // excludes class by fully-qualified JVM class name, wildcards '*' and '?' are available
-                classes(
-                    "*Kt",
-                    "*Spec",
-                    "*Test",
-                    "*Mapper*",
-                    "*Config",
-                    "*Repository",
-                    "*Interceptor",
-                    "*entity*",
-                    "*Entity*",
-                    "*Constants",
-                    "*Application",
-                    "*Request",
-                    "*Response",
-                )
+                classes("*Kt", "*Spec", "*Test", "*Application", "*Config", "*Container")
                 // excludes all classes located in specified package and it subpackages, wildcards '*' and '?' are available
                 // packages("com.another.subpackage")
                 // excludes all classes and functions, annotated by specified annotations, wildcards '*' and '?' are available
@@ -98,6 +85,15 @@ kover {
                 classes("com.helloworld.*")
                 // includes all classes located in specified package and it subpackages
                 // packages("com.another.subpackage")
+            }
+        }
+
+        verify {
+            rule {
+                bound {
+                    minValue.set(50)
+                    maxValue.set(75)
+                }
             }
         }
     }

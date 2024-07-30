@@ -40,6 +40,8 @@ dependencies {
     // jackson object mapper
     testImplementation(libs.spring.boot.starter.web)
     testImplementation(libs.testcontainers.mysql)
+    testImplementation("org.testcontainers:junit-jupiter")
+    testImplementation("org.springframework.boot:spring-boot-testcontainers")
 
     runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
     intTestRuntimeOnly("com.mysql:mysql-connector-j")
