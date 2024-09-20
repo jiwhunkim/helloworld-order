@@ -2,7 +2,7 @@
 # https://docs.gradle.org/current/userguide/platforms.html#sub::toml-dependencies-format
 
 [versions]
-kotlin = "2.0.0"
+kotlin = "1.9.23"
 ktlint = "12.1.0"
 detekt = "1.23.6"
 jacoco-to-cobertura = "1.2.0"
@@ -23,7 +23,6 @@ restdoc-api-spec-gradle-plugin = "0.19.2"
 asciidoctor-gradle-jvm = "4.0.2"
 sonarqube = "5.0.0.4638"
 snakeyaml = "2.2"
-jib = "3.4.0"
 logstash-logback-encoder = "7.4"
 
 [libraries]
@@ -70,6 +69,5 @@ kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-spring = { id = "org.jetbrains.kotlin.plugin.spring", version.ref = "kotlin" }
 kotlin-jpa = { id = "org.jetbrains.kotlin.plugin.jpa", version.ref = "kotlin" }
 restdocs-api-spec = { id = "com.epages.restdocs-api-spec", version.ref = "restdocs-api-spec" }
-jib = { id = "com.google.cloud.tools.jib", version.ref = "jib" }
 spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
 spring-dependency-management = { id = "io.spring.dependency-management", version.ref = "spring-dependency-management" }

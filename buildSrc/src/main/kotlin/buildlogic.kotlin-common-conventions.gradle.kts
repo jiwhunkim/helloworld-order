@@ -15,7 +15,7 @@ dependencies {
 
 kotlin {
     compilerOptions {
-        apiVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_0)
+        apiVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_1_9)
         freeCompilerArgs.add("-Xjsr305=strict")
     }
 }
